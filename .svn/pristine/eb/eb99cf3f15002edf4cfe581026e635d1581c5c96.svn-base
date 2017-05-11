@@ -1,0 +1,25 @@
+package com.cintel.elp.controller.basicfun;
+
+import java.io.UnsupportedEncodingException;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.cintel.elp.common.utils.base.Const;
+
+@Controller
+@RequestMapping("/backstage/preproject/")
+public class PreprojectController {
+
+	
+	@RequestMapping("index")
+	public String index(Model model) throws UnsupportedEncodingException{	
+		/*if(doSecurityIntercept(Const.RESOURCES_TYPE_MENU)){
+			model.addAttribute("permitBtn", getPermitBtn(Const.RESOURCES_TYPE_FUNCTION));		
+			return "/system/resources/list";
+		}
+		return Const.NO_AUTHORIZED_URL;*/
+		return "/basicfun/preproject/list";
+	}
+}

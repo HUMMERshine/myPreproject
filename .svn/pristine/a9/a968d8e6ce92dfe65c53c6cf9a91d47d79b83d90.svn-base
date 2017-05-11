@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cintel.elp.repository.basicfun.WarehouseDao">
+ 	<resultMap id="base" type="Warehouse" >
+
+ 	</resultMap>
+ 	
+ 	<select id="findByPage"  resultMap="base" parameterType="Warehouse">
+    	SELECT * FROM location WHERE loc_type = '仓库'
+    </select> 
+    
+    <delete id="delete" parameterType="Warehouse">
+		DELETE FROM location WHERE loc_id = #{loc_id}
+	</delete>	
+	
+	<delete id="deleteBatch" parameterType ="java.util.List">
+		DELETE FROM location  
+		WHERE loc_id IN(
+			<foreach item="o" collection="list" open="" separator="," close="" >
+				#{o.loc_id}
+			</foreach>
+			)
+	</delete>
+	
+	<select id="find"  resultMap="base" parameterType="Warehouse">
+    	SELECT t.* FROM location t WHERE 1=1 
+       	<if test="loc_id != null and loc_id!='' ">
+        	AND t.loc_id=#{loc_id}
+       	</if>
+    </select>
+    
+    <insert id="insert"  parameterType="Warehouse">	
+	 	<![CDATA[
+		INSERT INTO location(
+		loc_id,
+		loc_name,
+		location_detail,
+		department,
+		loc_type,
+		master,
+		contact
+		) VALUES (
+		#{loc_id},
+		#{loc_name},
+		#{location_detail},
+		#{department},
+		#{loc_type},
+		#{master},
+		#{contact}
+		)
+		]]>  
+	</insert>
+	
+	<update id="update" parameterType="Warehouse">
+		UPDATE location 
+		SET 
+			loc_name  =#{loc_name} ,
+			location_detail =#{location_detail},
+			department=#{department},
+			master =#{master},
+			contact=#{contact}
+		WHERE 
+			loc_id=#{loc_id}
+	</update>	
+ 	
+</mapper>

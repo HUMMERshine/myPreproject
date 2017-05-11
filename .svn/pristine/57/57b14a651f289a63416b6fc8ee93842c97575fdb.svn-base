@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cintel.elp.repository.basicfun.PreprojectDao">
+ 	<resultMap id="base" type="Preproject" >
+
+ 	</resultMap>
+ 	<select id="findByPage" resultMap="base" parameterType="Preproject">
+ 		SELECT * FROM preproject WHERE 1=1
+ 		<if test="param.pre_name!=null and param.pre_name!='' ">
+        AND (
+        	pre_name LIKE CONCAT('%',#{param.pre_name},'%')    
+        	OR pre_kind LIKE CONCAT('%',#{param.pre_name},'%')
+        	OR climate LIKE CONCAT('%',#{param.pre_name},'%')
+        	OR geography LIKE CONCAT('%',#{param.pre_name},'%')
+        	)
+        </if>
+ 		ORDER BY "pre_id"
+ 	</select>
+ 	
+ 	<select id="find"  resultMap="base" parameterType="Preproject">
+       SELECT t.* FROM preproject t WHERE 1=1 
+       <if test="pre_id != null and pre_id!='' ">
+        	AND t."pre_id"=#{pre_id}
+       </if>
+    </select> 
+    	<update id="update" parameterType="Preproject">
+		UPDATE preproject 
+		SET 
+			"pre_name"  =#{pre_name},
+			"pre_kind"  =#{pre_kind},
+			"strength"  =#{strength},
+			"area"  =#{area},
+			"people"  =#{people},
+			"climate"  =#{climate},
+			"geography"  =#{geography},
+			"match"  =#{match}
+		WHERE 
+			"pre_id"=#{pre_id}
+	</update>
+	<insert id="insert"  parameterType="Preproject">	
+ 	<![CDATA[
+	INSERT INTO preproject(
+	"pre_id",
+	"pre_name",
+	"pre_kind",
+	"strength",
+	"area",
+	"people",
+	"climate",
+	"geography",
+	"match"
+	) VALUES (
+	#{pre_id},
+	#{pre_name},
+	#{pre_kind},
+	#{strength},
+	#{area},
+	#{people},
+	#{climate},
+	#{geography},
+	#{match}
+	)
+	]]>  
+	</insert>
+    <select id="count"  resultType="int" parameterType="Preproject">
+       SELECT count(*) FROM preproject t WHERE 1=1 
+    </select>        
+ 	
+	<delete id="delete" parameterType="Preproject">
+	DELETE FROM preproject  WHERE 1=1 
+	AND "pre_id"=#{pre_id} 
+	</delete>
+	<delete id="deleteBatch" parameterType="java.util.List">
+	DELETE FROM preproject 
+	WHERE "pre_id" IN(
+		<foreach item="o" collection="list" open="" separator="," close="" >
+			#{o.pre_id}
+		</foreach>
+		)
+	</delete>
+</mapper>

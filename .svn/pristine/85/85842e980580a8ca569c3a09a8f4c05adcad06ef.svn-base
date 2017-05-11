@@ -1,0 +1,8 @@
+eclipse.preferences.version=1
+encoding//WebContent/WEB-INF/views/system/common/includeSystemSet.jsp=UTF-8
+encoding//resources/log4j.properties=UTF-8
+encoding//resources/mail.properties=UTF-8
+encoding//resources/spring/dbconfig.properties=UTF-8
+encoding//resources/upload.properties=UTF-8
+encoding//resources/weixin/mp.properties=UTF-8
+encoding/<project>=UTF-8

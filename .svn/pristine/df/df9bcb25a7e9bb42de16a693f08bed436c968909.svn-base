@@ -1,0 +1,71 @@
+package com.cintel.elp.service.basicfun;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cintel.elp.common.mybatis.Page;
+import com.cintel.elp.entity.basicfun.Preproject;
+import com.cintel.elp.repository.basicfun.PreprojectDao;
+
+@Service("PreprojectService")
+public class PreprojectServiceImp implements PreprojectService {
+
+	@Autowired
+	private PreprojectDao dao;
+	
+	@Override
+	public Map<String, Preproject> findAll(Preproject preproject) {
+		System.out.println("\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n");
+		List<Preproject> list = dao.findAll(preproject);
+		for(Preproject pre : list){
+			System.out.println(pre);
+		}
+		return null;
+	}
+	
+	@Override
+	public void insert(Preproject o) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void delete(Preproject o) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void deleteBatch(List<Preproject> os) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void update(Preproject o) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public List<Preproject> find(Preproject o) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Page<Preproject> findByPage(Preproject o, Page<Preproject> page) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int count(Preproject o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

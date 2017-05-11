@@ -1,0 +1,41 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<div id="auDiv" class="hide">
+		<form id="auForm" method="POST" onsubmit="return false;" >
+			<table cellspacing="0" cellpadding="0" border="0" class="customTable">
+				<tbody>
+					<tr style="display:none">
+						<td colspan="2" class="ui-state-error"><input type="hidden" name="loc_id" ></td>
+					</tr>
+					<tr class="FormData">
+						<td class="CaptionTD">名称：</td>
+						<td class="DataTD">&nbsp;
+						<input type="text" maxlength="16" jyValidate="required,ennum" name="loc_name" class="FormElement ui-widget-content ui-corner-all"></td>
+					</tr>
+					<tr class="FormData">
+						<td class="CaptionTD">位置：</td>
+						<td class="DataTD">&nbsp;
+						<textarea  rows="3" cols="10" maxlength="100" name="location_detail" multiline="true" class="FormElement ui-widget-content ui-corner-all isSelect147"></textarea>
+						</td>
+					</tr>
+					<tr class="FormData">
+						<td class="CaptionTD">归属：</td>
+						<td class="DataTD">&nbsp;
+						<input type="text" maxlength="32" name="department" class="FormElement ui-widget-content ui-corner-all"></td>
+					</tr>
+					<tr class="FormData">
+						<td class="CaptionTD">联系人：</td>
+						<td class="DataTD">&nbsp;
+						<input type="text" maxlength="32" name="master" class="FormElement ui-widget-content ui-corner-all"></td>
+					</tr>
+					<tr class="FormData">
+						<td class="CaptionTD">联系方式：</td>
+						<td class="DataTD">&nbsp;
+						<input type="text" maxlength="32" name="contact" class="FormElement ui-widget-content ui-corner-all"></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<div class="hr hr-dotted"></div>
+</div>
+	
+	

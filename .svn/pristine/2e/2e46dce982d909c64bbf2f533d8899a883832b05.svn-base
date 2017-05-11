@@ -1,0 +1,16 @@
+package com.cintel.elp.service.basicfun;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cintel.elp.common.mybatis.Page;
+import com.cintel.elp.entity.basicfun.Preproject;
+import com.cintel.elp.repository.basicfun.PreprojectDao;
+import com.cintel.elp.service.base.BaseServiceImp;
+
+@Service("PreprojectService")
+public class PreprojectServiceImp extends BaseServiceImp<Preproject> implements PreprojectService {
+}

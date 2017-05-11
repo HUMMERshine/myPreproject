@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cintel.elp.repository.basicfun.PreGoodsDao">
+ 	<resultMap id="base" type="PreGoods" >
+ 		<id column="pre_goods_id" property="pre_goods_id" javaType="integer" jdbcType="INTEGER" />
+		<result column="priority" property="priority" javaType="string" jdbcType="VARCHAR" />
+		<result column="amount" property="amount" javaType="double" jdbcType="DOUBLE" />
+		<result column="save_cycle" property="save_cycle" javaType="integer" jdbcType="INTEGER" />
+		<association property="preproject" javaType="Preproject"
+			column="pre_id">
+			<id property="pre_id" column="pre_id" jdbcType="VARCHAR" />
+			<result column="pre_name" property="pre_name" jdbcType="VARCHAR" />
+		</association>
+		<association property="goods" javaType="Goods">
+			<id property="goods_ID" column="goods_ID" jdbcType="VARCHAR" />
+			<result column="code" property="code" jdbcType="VARCHAR" />
+			<result column="goods_name" property="goods_name" jdbcType="VARCHAR" />
+			<result column="goods_kind" property="goods_kind" jdbcType="VARCHAR" />
+			<result column="unit" property="unit" jdbcType="VARCHAR" />
+			<result column="goods_size" property="goods_size" jdbcType="VARCHAR" />
+		</association>
+ 	</resultMap>
+ 	
+ 	<select id="findByPage" resultMap="base" parameterType="PreGoods">
+		SELECT * FROM pre_goods 
+		left join goods on pre_goods.goods_code = goods.code
+		left join preproject on pre_goods.pre_id = preproject.pre_id
+		where pre_goods.pre_id = #{param.preproject.pre_id}
+		order by pre_goods.save_cycle,pre_goods.priority
+ 	</select>
+ 	
+ 	<select id="find" resultMap="base" parameterType="PreGoods">
+		SELECT * FROM pre_goods 
+		left join goods on pre_goods.goods_code = goods.code
+		left join preproject on pre_goods.pre_id = preproject.pre_id 
+		where pre_goods.pre_id=#{preproject.pre_id}
+		order by pre_goods.save_cycle,pre_goods.priority
+ 	</select>
+ 	
+ 	<insert id="insert"  parameterType="PreGoods">	
+ 	<![CDATA[
+	INSERT INTO pre_goods(
+	pre_id,
+	priority,
+	goods_code,
+	amount,
+	save_cycle
+	) VALUES (
+	#{preproject.pre_id},
+	#{priority},
+	#{goods.code},
+	#{amount},
+	#{save_cycle}
+	)
+	]]>  
+	</insert>
+ 	<!-- <select id="find"  resultMap="base" parameterType="Preproject">
+       SELECT t.* FROM preproject t WHERE 1=1 
+       <if test="pre_id != null and pre_id!='' ">
+        	AND t."pre_id"=#{pre_id}
+       </if>
+    </select> 
+    	<update id="update" parameterType="Preproject">
+		UPDATE preproject 
+		SET 
+			"pre_name"  =#{pre_name},
+			"pre_kind"  =#{pre_kind},
+			"strength"  =#{strength},
+			"area"  =#{area},
+			"people"  =#{people},
+			"climate"  =#{climate},
+			"geography"  =#{geography},
+			"match"  =#{match}
+		WHERE 
+			"pre_id"=#{pre_id}
+	</update>
+	<insert id="insert"  parameterType="Preproject">	
+ 	<![CDATA[
+	INSERT INTO preproject(
+	"pre_id",
+	"pre_name",
+	"pre_kind",
+	"strength",
+	"area",
+	"people",
+	"climate",
+	"geography",
+	"match"
+	) VALUES (
+	#{pre_id},
+	#{pre_name},
+	#{pre_kind},
+	#{strength},
+	#{area},
+	#{people},
+	#{climate},
+	#{geography},
+	#{match}
+	)
+	]]>  
+	</insert>
+    <select id="count"  resultType="int" parameterType="Preproject">
+       SELECT count(*) FROM preproject t WHERE 1=1 
+    </select>        
+ 	
+	<delete id="delete" parameterType="Preproject">
+	DELETE FROM preproject  WHERE 1=1 
+	AND "pre_id"=#{pre_id} 
+	</delete>
+	<delete id="deleteBatch" parameterType="java.util.List">
+	DELETE FROM preproject 
+	WHERE "pre_id" IN(
+		<foreach item="o" collection="list" open="" separator="," close="" >
+			#{o.pre_id}
+		</foreach>
+		)
+	</delete> -->
+</mapper>

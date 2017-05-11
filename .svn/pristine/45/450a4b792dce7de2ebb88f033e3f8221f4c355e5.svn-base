@@ -1,0 +1,16 @@
+package com.cintel.elp.repository.basicfun;
+
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.cintel.elp.entity.basicfun.Preproject;
+import com.cintel.elp.entity.system.dict.DataDict;
+import com.cintel.elp.repository.base.BaseDao;
+import com.cintel.elp.repository.base.JYBatis;
+
+@JYBatis
+public interface PreprojectDao{
+
+	List<Preproject> findAll(Preproject o);
+}

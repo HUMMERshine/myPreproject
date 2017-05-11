@@ -1,0 +1,86 @@
+package com.cintel.elp.entity.basicfun;
+
+import com.cintel.elp.entity.base.BaseEntity;
+
+/**
+ * 
+ * @author lishutao
+ * 预案
+ */
+public class Preproject extends BaseEntity{
+	
+	private static final long serialVersionUID = 1L;
+	
+	private String pre_id;
+	private String pre_name;
+	private String pre_kind;
+	private String strength;
+	private String area;
+	private String people;
+	private String climate;
+	private String geography;
+	private String match;
+	
+	public String getPre_ID() {
+		return pre_id;
+	}
+	public void setPre_ID(String pre_id) {
+		this.pre_id = pre_id;
+	}
+	public String getPre_name() {
+		return pre_name;
+	}
+	public void setPre_name(String pre_name) {
+		this.pre_name = pre_name;
+	}
+	public String getPre_kind() {
+		return pre_kind;
+	}
+	public void setPre_kind(String pre_kind) {
+		this.pre_kind = pre_kind;
+	}
+	public String getStrength() {
+		return strength;
+	}
+	public void setStrength(String strength) {
+		this.strength = strength;
+	}
+	public String getArea() {
+		return area;
+	}
+	public void setArea(String area) {
+		this.area = area;
+	}
+	public String getPeople() {
+		return people;
+	}
+	public void setPeople(String people) {
+		this.people = people;
+	}
+	public String getClimate() {
+		return climate;
+	}
+	public void setClimate(String climate) {
+		this.climate = climate;
+	}
+	public String getGeography() {
+		return geography;
+	}
+	public void setGeography(String geography) {
+		this.geography = geography;
+	}
+	public String getMatch() {
+		return match;
+	}
+	public void setMatch(String match) {
+		this.match = match;
+	}
+	
+	@Override
+	public String toString() {
+		return "Preproject [pre_id=" + pre_id + ", pre_name=" + pre_name + ", pre_kind=" + pre_kind + ", strength="
+				+ strength + ", area=" + area + ", people=" + people + ", climate=" + climate + ", geography="
+				+ geography + ", match=" + match + "]";
+	}
+	
+}

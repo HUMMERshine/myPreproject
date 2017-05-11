@@ -1,0 +1,44 @@
+.yuan_title {
+    padding: 10px;
+}
+.ptl10 {
+    padding-left: 10px;
+}
+.fenye {
+    padding: 10px 3px;
+}
+.fenye .ye_cur {
+    background: none repeat scroll 0 0 #fff;
+    color: #f60;
+    font-weight: bold;
+    border-radius: 2px 2px 2px 2px;
+    border: 1px solid #fff;
+}
+.yuan_lbk {
+    width: 735px;
+    margin: 0 auto 10px;
+    padding: 0;
+    border-width: 1px 1px 1px 1px;
+    border-style: solid;
+    border-color: #cccccc;
+    height: auto;
+    font-size: 14px;
+    float: left;
+}
+.yuan_list_01 {
+    border-bottom: 1px dashed #C8C8C8;
+    background-color: #FFF;
+    height: 30px;
+    vertical-align: middle;
+    line-height: 22px;
+    padding: 10px;
+}
+
+.yuan_list_02 {
+    border-bottom: 1px dashed #C8C8C8;
+    background-color: #f9f8f8;
+    height: 30px;
+    vertical-align: middle;
+    line-height: 22px;
+    padding: 10px;
+}

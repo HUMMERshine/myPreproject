@@ -1,0 +1,10 @@
+/.DS_Store
+/com/
+/log4j.properties
+/mail.properties
+/mybatis/
+/redis.properties
+/spring/
+/stencilset.json
+/upload.properties
+/weixin/

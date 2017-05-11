@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cintel.elp.repository.basicfun.PreprojectDao">
+ 	<resultMap id="base" type="Preproject" >
+		<id column="pre_id" property="pre_id" javaType="string" jdbcType="VARCHAR" />
+		<result column="pre_name" property="pre_name" javaType="string" jdbcType="VARCHAR" />
+		<result column="pre_time" property="pre_time" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP" />
+		<result column="match" property="match" javaType="string" jdbcType="VARCHAR" />
+		<association property="preCondition" javaType="PreCondition">
+			<id property="condition_id" column="condition_id" jdbcType="INTEGER" />
+			<result column="disaster_kind" property="disaster_kind" jdbcType="VARCHAR" />
+			<result column="disaster_strength" property="disaster_strength" jdbcType="DOUBLE" />
+			<result column="disaster_area" property="disaster_area" jdbcType="DOUBLE" />
+			<result column="disaster_people" property="disaster_people" jdbcType="INTEGER" />
+			<result column="climate" property="climate" jdbcType="VARCHAR" />
+			<result column="geography" property="geography" jdbcType="VARCHAR" />
+		</association>
+ 	</resultMap>
+ 	<select id="findByPage" resultMap="base" parameterType="Preproject">
+ 		SELECT * FROM preproject, pre_condition  WHERE preproject.pre_id = pre_condition.pre_id
+ 		<if test="param.pre_name!=null and param.pre_name!='' ">
+        AND (
+        	preproject.pre_name LIKE CONCAT('%',#{param.pre_name},'%')    
+        	OR pre_condition.disaster_kind LIKE CONCAT('%',#{param.pre_name},'%')
+        	OR pre_condition.climate LIKE CONCAT('%',#{param.pre_name},'%')
+        	OR pre_condition.geography LIKE CONCAT('%',#{param.pre_name},'%')
+        	)
+        </if>
+ 		ORDER BY preproject.pre_id
+ 	</select>
+ 	
+ 	<select id="find"  resultMap="base" parameterType="Preproject">
+       SELECT t.*, pre_condition.* FROM preproject t , pre_condition  WHERE t.pre_id = pre_condition.pre_id
+       <if test="pre_id != null and pre_id!='' ">
+        	AND t."pre_id"=#{pre_id}
+       </if>
+    </select> 
+    	<update id="update" parameterType="Preproject">
+		UPDATE preproject 
+		SET 
+			pre_name  =#{pre_name},
+			match  =#{match}
+		WHERE 
+			"pre_id"=#{pre_id};
+		UPDATE pre_condition 
+		SET 
+			disaster_kind  =#{preCondition.disaster_kind},
+			disaster_strength  =#{preCondition.disaster_strength},
+			disaster_area  =#{preCondition.disaster_area},
+			disaster_people  =#{preCondition.disaster_people},
+			climate  =#{preCondition.climate},
+			geography  =#{preCondition.geography}
+		WHERE 
+			"pre_id"=#{pre_id}
+	</update>
+	<insert id="insert"  parameterType="Preproject">	
+ 	<![CDATA[
+	INSERT INTO preproject(
+	pre_id,
+	pre_name,
+	pre_time,
+	match
+	) VALUES (
+	#{pre_id},
+	#{pre_name},
+	#{pre_time},
+	#{match}
+	);
+	INSERT INTO pre_condition(
+	pre_id,
+	disaster_kind,
+	disaster_strength,
+	disaster_area,
+	disaster_people,
+	climate,
+	geography
+	) VALUES (
+	#{pre_id},
+	#{preCondition.disaster_kind},
+	#{preCondition.disaster_strength},
+	#{preCondition.disaster_area},
+	#{preCondition.disaster_people},
+	#{preCondition.climate},
+	#{preCondition.geography}
+	)
+	]]>  
+	</insert>
+    <select id="count"  resultType="int" parameterType="Preproject">
+       	SELECT count(*) FROM preproject t WHERE 1=1 
+    </select>        
+ 	
+	<delete id="delete" parameterType="Preproject">
+	DELETE FROM preproject  WHERE 1=1 
+	AND "pre_id"=#{pre_id};
+	DELETE FROM pre_condition  WHERE 1=1 
+	AND "pre_id"=#{pre_id}
+	</delete>
+	<delete id="deleteBatch" parameterType="java.util.List">
+	DELETE FROM preproject 
+	WHERE "pre_id" IN(
+		<foreach item="o" collection="list" open="" separator="," close="" >
+			#{o.pre_id}
+		</foreach>
+		);
+	DELETE FROM pre_condition 
+	WHERE "pre_id" IN(
+		<foreach item="o" collection="list" open="" separator="," close="" >
+			#{o.pre_id}
+		</foreach>
+		)
+	</delete>
+</mapper>
