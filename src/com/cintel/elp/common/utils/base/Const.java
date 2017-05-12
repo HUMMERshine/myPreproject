@@ -85,5 +85,8 @@ public class Const {
 	 *数据获取失败
 	 */
 	public static final String DATA_FAIL = "数据获取失败";
-
+	/**
+	 * 等待审核
+	 */
+	public static final String DATA_APPROVAL = "等待审核";
 }

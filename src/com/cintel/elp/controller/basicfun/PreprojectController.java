@@ -63,13 +63,13 @@ public class PreprojectController extends BaseController<Preproject> {
 	private String excelPath = "/Users/lishutao/Documents/excelexport/";
 
 	@Autowired
-	private PreprojectService service;
+	private PreprojectService preproject_service;
 
 	@Autowired
-	private PreOperateService service2;
+	private PreOperateService preoperate_service;
 
 	@Autowired
-	private PreGoodsService service3;
+	private PreGoodsService pregoods_service;
 	
 	@Autowired
 	private AccountService service4;
@@ -126,7 +126,7 @@ public class PreprojectController extends BaseController<Preproject> {
 				Preproject o = new Preproject();
 				if (keyWord == null || keyWord.length() > 0)
 					o.setPre_name(keyWord);
-				Page<Preproject> result = service.findByPage(o, page);
+				Page<Preproject> result = preproject_service.findByPage(o, page);
 				/**
 				 * 导出所有预案信息。
 				 */
@@ -172,7 +172,7 @@ public class PreprojectController extends BaseController<Preproject> {
 				Preproject preproject = new Preproject();
 				preproject.setPre_id(pre_id);
 				o.setPreproject(preproject);
-				Page<PreGoods> result = service3.findByPage(o, page);
+				Page<PreGoods> result = pregoods_service.findByPage(o, page);
 				System.out.println(result.getResults());
 				Map<String, Object> p = new HashMap<String, Object>();
 				p.put("permitBtn",getPermitBtn(Const.RESOURCES_TYPE_BUTTON));
@@ -198,7 +198,7 @@ public class PreprojectController extends BaseController<Preproject> {
 				Preproject preproject = new Preproject();
 				preproject.setPre_id(pre_id);
 				o.setPreproject(preproject);
-				List<PreGoods> list = service3.find(o);
+				List<PreGoods> list = pregoods_service.find(o);
 				page.setResults(list);
 				//System.out.println(page.getResults().size());
 				System.out.println(page.getResults());
@@ -220,7 +220,7 @@ public class PreprojectController extends BaseController<Preproject> {
 		AjaxRes ar = getAjaxRes();
 		if (ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_BUTTON))) {
 			try {
-				List<Preproject> list = service.find(o);
+				List<Preproject> list = preproject_service.find(o);
 				Preproject obj = list.get(0);
 				ar.setSucceed(obj);
 			} catch (Exception e) {
@@ -232,7 +232,7 @@ public class PreprojectController extends BaseController<Preproject> {
 	}
 	
 	public boolean isExist(Preproject o) {
-			List<Preproject> list = service.find(o);
+			List<Preproject> list = preproject_service.find(o);
 			if(list.isEmpty()) return true;
 			return false;
 	}
@@ -269,25 +269,6 @@ public class PreprojectController extends BaseController<Preproject> {
 		return preProject;
 	}
 	
-	@RequestMapping(value = "add", method = RequestMethod.POST)
-	@ResponseBody
-	public AjaxRes add(@RequestBody Preproject p) {
-			
-		AjaxRes ar = getAjaxRes();
-		if (ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_FUNCTION))) {
-			try {
-				PreOperate preOperate = putPreprojectMap(p, "insert", "新增预案");
-				System.out.println(preOperate);
-				service2.insert(preOperate);
-				ar.setSucceedMsg(Const.SAVE_SUCCEED);
-			} catch (Exception e) {
-				logger.error(e.toString(), e);
-				ar.setFailMsg(Const.SAVE_FAIL);
-			}
-		}
-		return ar;
-	}
-	
 	/**
 	 * 审核人员的审核后的结果操作。
 	 * @param preOperate
@@ -295,14 +276,14 @@ public class PreprojectController extends BaseController<Preproject> {
 	 */
 	@RequestMapping(value = "approval", method = RequestMethod.POST)
 	@ResponseBody
-	public AjaxRes add2(PreOperate preOperate) {
+	public AjaxRes approvalPreproject(PreOperate preOperate) {
 		AjaxRes ar = getAjaxRes();
 		if (ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_BUTTON))) {
 			try { 
 				System.out.println("***********");
 				System.out.println(preOperate);
 				
-				List<PreOperate> list = service2.find(preOperate);//搜索出已经审核过的那条记录
+				List<PreOperate> list = preoperate_service.find(preOperate);//搜索出已经审核过的那条记录
 				System.out.println("list:" + list);
 				PreOperate updatedPreOperate = list.get(0);
 				updatedPreOperate.setApproval_state(true);
@@ -316,11 +297,24 @@ public class PreprojectController extends BaseController<Preproject> {
 				
 				if(preOperate.getApproval_result().equals("不通过")){
 					//仅更新操作数据库。
-					service2.update(updatedPreOperate);
+					if(updatedPreOperate != null){
+						preoperate_service.update(updatedPreOperate);
+					}
 				}else{
 					//更新两个数据库。
-					service.insert(preproject);
-					service2.update(updatedPreOperate);
+					if(preproject != null){
+						String operate_type = updatedPreOperate.getOperate_type();
+						if(operate_type.equals("update")){
+							preproject_service.update(preproject);
+						}else if(operate_type.equals("insert")){
+							preproject_service.insert(preproject);
+						}else if(operate_type.equals("delete")){
+							preproject_service.delete(preproject);
+						}
+					}
+					if(updatedPreOperate != null){
+						preoperate_service.update(updatedPreOperate);
+					}
 				}
 				System.out.println(preprojectMap);
 				ar.setSucceedMsg(Const.SAVE_SUCCEED);
@@ -332,14 +326,37 @@ public class PreprojectController extends BaseController<Preproject> {
 		return ar;
 	} 
 
+	@RequestMapping(value = "add", method = RequestMethod.POST)
+	@ResponseBody
+	public AjaxRes add(@RequestBody Preproject p) {
+			
+		AjaxRes ar = getAjaxRes();
+		if (ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_FUNCTION))) {
+			try {
+				PreOperate preOperate = putPreprojectMap(p, "insert", "新增预案");
+				preoperate_service.insert(preOperate);
+				/*preproject_service.insert(preproject);
+				ar.setSucceedMsg(Const.SAVE_SUCCEED);*/
+				ar.setSucceedMsg(Const.DATA_APPROVAL);
+			} catch (Exception e) {
+				logger.error(e.toString(), e);
+				ar.setFailMsg(Const.SAVE_FAIL);
+			}
+		}
+		return ar;
+	}
+	
 	@RequestMapping(value = "del", method = RequestMethod.POST)
 	@ResponseBody
 	public AjaxRes del(Preproject o) {
 		AjaxRes ar = getAjaxRes();
 		if (ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_BUTTON))) {
 			try {
-				service.delete(o);
-				ar.setSucceedMsg(Const.DEL_SUCCEED);
+				PreOperate preOperate = putPreprojectMap(o, "delete", "删除预案");
+				preoperate_service.insert(preOperate);
+				/*preproject_service.delete(o);
+				ar.setSucceedMsg(Const.DEL_SUCCEED);*/
+				ar.setSucceedMsg(Const.DATA_APPROVAL);
 			} catch (Exception e) {
 				logger.error(e.toString(), e);
 				ar.setFailMsg(Const.DEL_FAIL);
@@ -354,8 +371,11 @@ public class PreprojectController extends BaseController<Preproject> {
 		AjaxRes ar = getAjaxRes();
 		if (ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_BUTTON))) {
 			try {
-				service.update(o);
-				ar.setSucceedMsg(Const.UPDATE_SUCCEED);
+				PreOperate preOperate = putPreprojectMap(o, "update", "更新预案");
+				preoperate_service.insert(preOperate);
+				/*preproject_service.update(o);
+				ar.setSucceedMsg(Const.UPDATE_SUCCEED);*/
+				ar.setSucceedMsg(Const.DATA_APPROVAL);
 			} catch (Exception e) {
 				logger.error(e.toString(), e);
 				ar.setFailMsg(Const.UPDATE_FAIL);
@@ -377,7 +397,7 @@ public class PreprojectController extends BaseController<Preproject> {
 					preproject.setPre_id(s);
 					list.add(preproject);
 				}
-				service.deleteBatch(list);
+				preproject_service.deleteBatch(list);
 				ar.setSucceedMsg(Const.DEL_SUCCEED);
 			} catch (Exception e) {
 				logger.error(e.toString(), e);
@@ -502,16 +522,16 @@ public class PreprojectController extends BaseController<Preproject> {
 				/*
 				 * 写数据库表：preproject和pre_condition。
 				 */
-				service.insert(preproject);
+				preproject_service.insert(preproject);
 				/*
 				 * 写数据库表：pre_googds。
 				 */
 				for(PreGoods preGoods : preGoodsList){
-					service3.insert(preGoods);
+					pregoods_service.insert(preGoods);
 				}
 				
 				for(PreOperate preOperate : preOperateList){
-					service2.insert(preOperate);
+					preoperate_service.insert(preOperate);
 				}
 			}else{
 				System.out.println("***********已存在");
@@ -532,26 +552,26 @@ public class PreprojectController extends BaseController<Preproject> {
 				PreprojectToExcel excel = new PreprojectToExcel();
 				Workbook workbook = new HSSFWorkbook();
 
-				List<Preproject> pres = service.find(o);
-				service.preprojectExport(excel, workbook, pres, "预案信息", "预案基本信息");
+				List<Preproject> pres = preproject_service.find(o);
+				preproject_service.preprojectExport(excel, workbook, pres, "预案信息", "预案基本信息");
 				
 				PreGoods preGoods = new PreGoods();
 				preGoods.setPreproject(o);
-				List<PreGoods> goods = service3.find(preGoods);
+				List<PreGoods> goods = pregoods_service.find(preGoods);
 				List<PreGoods> goodsList = new ArrayList<>();
 				for (int i = 0; i < goods.size(); i++) {
 					goodsList.add(goods.get(i));
 					if (i == goods.size() - 1
 							|| !goods.get(i).getSave_cycle().equals(goods.get(i + 1).getSave_cycle())) {
-						service.preGoodsExport(excel, workbook, goodsList, goods.get(i).getSave_cycle() + "小时救援物资信息", "物资基本信息");
+						preproject_service.preGoodsExport(excel, workbook, goodsList, goods.get(i).getSave_cycle() + "小时救援物资信息", "物资基本信息");
 						goodsList.clear();
 					}
 				}
 				
 				PreOperate preOperate = new PreOperate();
 				preOperate.setPreproject(o);
-				List<PreOperate> operates = service2.findByPreId(preOperate);
-				service.preOperateExport(excel, workbook, operates, "操作审核信息", "预案的操作和审核记录");
+				List<PreOperate> operates = preoperate_service.findByPreId(preOperate);
+				preproject_service.preOperateExport(excel, workbook, operates, "操作审核信息", "预案的操作和审核记录");
 				/*
 				 * 向sheet（预案信息表）内插入lists的内容，预案信息是表内的第一行标题
 				 * workbook代表该excel，名字在fos中填写。
@@ -587,7 +607,7 @@ public class PreprojectController extends BaseController<Preproject> {
 				o.setPreproject(pro);
 				// if(keyWord == null || keyWord.length() > 0)
 				// o.setPre_name(keyWord);
-				Page<PreOperate> result = service2.findByPage(o, page);
+				Page<PreOperate> result = preoperate_service.findByPage(o, page);
 				for (PreOperate operate : result.getResults()) {
 					System.out.println(operate);
 				}
@@ -680,7 +700,7 @@ public class PreprojectController extends BaseController<Preproject> {
 				 事件解析、匹配、
 				*/
 				
-				List<Preproject> list = service.find(new Preproject());
+				List<Preproject> list = preproject_service.find(new Preproject());
 				Preproject obj = list.get(0);
 				ar.setSucceed(obj);
 			} catch (Exception e) {

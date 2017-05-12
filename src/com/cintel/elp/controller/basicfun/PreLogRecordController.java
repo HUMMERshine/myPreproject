@@ -72,4 +72,23 @@ public class PreLogRecordController extends BaseController<PreOperate>{
 		}
 		return ar;
 	}
+	
+	@RequestMapping(value="findAll", method=RequestMethod.POST)
+	@ResponseBody
+	public AjaxRes findAll(PreOperate o){
+		System.out.println("-------+++++++");
+		AjaxRes ar=getAjaxRes();
+		//if(ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_BUTTON))){		
+			try {
+				System.out.println("-------+++++++");
+				List<PreOperate> list=service.find(o);
+				System.out.println(list);
+				ar.setSucceed(list);
+			} catch (Exception e) {
+				logger.error(e.toString(),e);
+				ar.setFailMsg(Const.DATA_FAIL);
+			}
+		//}
+		return ar;
+	}
 }

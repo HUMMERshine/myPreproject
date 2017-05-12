@@ -32,7 +32,11 @@
   	</select>
   	
   	<select id="find" resultMap="base" parameterType="PreOperate">
-		select * from pre_operate where pre_operate_id = #{pre_operate_id}
+		select * from pre_operate t  where 1 = 1
+		<if test="pre_operate_id != null and pre_operate_id != '' ">
+        	AND t."pre_id"=#{pre_id}
+       </if>
+       ORDER BY approval_state,approval_result
   	</select>
   	
   	<select id="findByPreId" resultMap="base" parameterType="PreOperate">

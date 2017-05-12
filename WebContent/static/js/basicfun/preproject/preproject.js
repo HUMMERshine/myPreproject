@@ -11,7 +11,8 @@ $(function () {
 	});
 	//新加
 	$('#addBtn').on('click', function(e) {
-		//通知浏览器不要执行与事件关联的默认动作		
+		//通知浏览器不要执行与事件关联的默认动作	
+		$("#pre_id_add").attr("disabled",false);
 		e.preventDefault();		
 		cleanForm();
 		JY.Model.edit2("auDiv","新增预案",function(){
@@ -69,7 +70,7 @@ $(function () {
 	});
 	
 	$('#pregoodsformAdd').click(function () {
-		if($('#pre_id_add').text().length <= 0){
+		if($('#pre_id_add').val().length <= 0){
 			swal("请先填写预案ID");
 			return;
 		}
@@ -139,6 +140,8 @@ function del(id){
 }
 function edit(id){
 	local_pre_id = id;
+	$("#pre_id_add").attr("disabled",true);
+	console.log("xxxxxxx");
 	cleanForm();
 	JY.Ajax.doRequest(null,jypath +'/backstage/preproject/find',{pre_id:id},function(data){
 		setForm(data);

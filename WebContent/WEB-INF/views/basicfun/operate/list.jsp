@@ -41,7 +41,7 @@
 				<div class="wrapper wrapper-content animated fadeInRight">
 					<table id=operateinfo class="table-bordered"></table>
 					<div style="text-align: right;">
-						<button id="btn_cancel" type="button" class="btn btn-success">
+						<button id="btn_approval" type="button" class="btn btn-success">
 							<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>审核
 						</button>
 					</div>
@@ -63,14 +63,13 @@
 					<p id="describe"></p>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-success" data-dismiss="modal">同意</button>
-					<button type="button" class="btn btn-danger" data-dismiss="modal">不同意</button>
+					<button type="button" id="btn_agree" class="btn btn-success" data-dismiss="modal">同意</button>
+					<button type="button" id="btn_cancel" class="btn btn-danger" data-dismiss="modal">不同意</button>
 				</div>
 			</div>
 			<!-- /.modal-content -->
 		</div>
 		<!-- /.modal -->
-	</div>
 	</div>
 	<script
 		src="${jypath}/static/js/bootstrap/bootstrap-table/bootstrap-table.min.js"></script>
