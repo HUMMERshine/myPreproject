@@ -117,15 +117,14 @@
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal"
 							aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="myModalLabel">操作详情</h4>
+						<h4 class="modal-title" id="myModalLabel">预案详情</h4>
 					</div>
 					<div class="modal-body">
 						<!-- <textarea id="describe" rows="10" cols="73"></textarea> -->
 						<p id="describe"></p>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-success" data-dismiss="modal">同意</button>
-						<button type="button" class="btn btn-danger" data-dismiss="modal">不同意</button>
+						<button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
 					</div>
 				</div>
 				<!-- /.modal-content -->

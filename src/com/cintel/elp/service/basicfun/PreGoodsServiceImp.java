@@ -8,10 +8,35 @@ import org.springframework.stereotype.Service;
 
 import com.cintel.elp.common.mybatis.Page;
 import com.cintel.elp.entity.basicfun.PreGoods;
+import com.cintel.elp.repository.basicfun.PreGoodsDao;
 import com.cintel.elp.service.base.BaseServiceImp;
 
 @Service("PreGoodsService")
 public class PreGoodsServiceImp extends BaseServiceImp<PreGoods> implements PreGoodsService {
+
+	@Autowired
+	private PreGoodsDao dao;
+	
+	@Override
+	public void deleteByPreId(PreGoods preGoods) {
+		// TODO Auto-generated method stub
+		dao.deleteByPreId(preGoods);
+	}
+
+	@Override
+	public Page<PreGoods> findByPage2(PreGoods o, Page<PreGoods> page) {
+		// TODO Auto-generated method stub
+		page.setResults(dao.findByPage2(o, page));
+		return page;
+	}
+	
+	@Override
+	public Page<PreGoods> findByPage3(PreGoods o) {
+		// TODO Auto-generated method stub
+		Page<PreGoods> page = new Page<>();
+		page.setResults(dao.findByPage3(o));
+		return page;
+	}
 	
 	/*@Autowired
 	private PreprojectDao dao;*/

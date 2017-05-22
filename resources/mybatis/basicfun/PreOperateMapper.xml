@@ -36,7 +36,7 @@
 		<if test="pre_operate_id != null and pre_operate_id != '' ">
         	AND t."pre_id"=#{pre_id}
        </if>
-       ORDER BY approval_state,approval_result
+       ORDER BY operate_time<!-- approval_state,approval_result -->
   	</select>
   	
   	<select id="findByPreId" resultMap="base" parameterType="PreOperate">

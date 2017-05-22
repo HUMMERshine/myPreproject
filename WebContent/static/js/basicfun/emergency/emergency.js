@@ -24,11 +24,17 @@ var ButtonInit = function() {
 	var postdata = {};
 	
 	oInit.Init = function() {
-		$('#btn_cancel')
-				.click(
-						function() {
-							window.location.href = '/elpdemo/webpage/modules/basicfun/preproject/list.jsp';
-						});
+//		$('#btn_cancel')
+//				.click(
+//						function() {
+//							window.location.href = '/elpdemo/webpage/modules/basicfun/preproject/list.jsp';
+//						});
+		$('#btn_create')
+		.click(
+				function() {
+					var param = 'level=' + $('#disaster_level').val() + '&time=' + $('#disaster_time').val() + '&people=' + $('#disaster_people').val() + '&area=' + $('#disaster_area').val() + '&climate=' + encodeURI($('#disaster_climate').val()) + '&geography=' + encodeURI($('#disaster_geography').val()) + '&info=' + $('#disaster_info').val()
+					window.location.href = jypath + '/backstage/emergency/create?' + param;
+				});
 		$('#btn_match').click(function() {
 			match();
 			$('#btn_select').show();

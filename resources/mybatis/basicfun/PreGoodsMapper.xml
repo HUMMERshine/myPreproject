@@ -29,6 +29,21 @@
 		order by pre_goods.save_cycle,pre_goods.priority
  	</select>
  	
+ 	<select id="findByPage2" resultMap="base" parameterType="PreGoods">
+		SELECT * FROM pre_goods 
+		left join goods on pre_goods.goods_code = goods.code
+		where pre_goods.pre_id = #{param.preproject.pre_id}
+		order by pre_goods.save_cycle,pre_goods.priority
+ 	</select>
+ 	
+ 	<select id="findByPage3" resultMap="base" parameterType="PreGoods">
+		SELECT * FROM pre_goods 
+		left join goods on pre_goods.goods_code = goods.code
+		left join preproject on pre_goods.pre_id = preproject.pre_id
+		where pre_goods.pre_id = #{param.preproject.pre_id}
+		order by pre_goods.save_cycle,pre_goods.priority
+ 	</select>
+ 	
  	<select id="find" resultMap="base" parameterType="PreGoods">
 		SELECT * FROM pre_goods 
 		left join goods on pre_goods.goods_code = goods.code
@@ -54,6 +69,23 @@
 	)
 	]]>  
 	</insert>
+	<update id="update" parameterType="PreGoods">
+		UPDATE pre_goods 
+		SET 
+			"priority"  =#{priority},
+			"goods_code"  =#{goods.code},
+			"amount"  =#{amount},
+			"save_cycle"  =#{save_cycle},
+			"pre_id" =#{preproject.pre_id}
+		WHERE 
+			"pre_goods_id"=#{pre_goods_id}
+	</update>
+	<delete id="delete" parameterType="PreGoods">
+	DELETE FROM pre_goods  WHERE  "pre_goods_id"=#{pre_goods_id} 
+	</delete>
+	<delete id="deleteByPreId" parameterType="PreGoods">
+	DELETE FROM pre_goods  WHERE "pre_id"=#{preproject.pre_id}
+	</delete>
  	<!-- <select id="find"  resultMap="base" parameterType="Preproject">
        SELECT t.* FROM preproject t WHERE 1=1 
        <if test="pre_id != null and pre_id!='' ">

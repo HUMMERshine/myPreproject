@@ -20,4 +20,6 @@ public interface PreprojectService extends BaseService<Preproject>{
 	public void preOperateExport(PreprojectToExcel excel, Workbook workbook, List<PreOperate> list, String sheetName,
 			String contentName) throws Exception ;
 	public Page<Preproject> match(Map<String, Object> map);
+	
+	public Page<PreGoods> getGoods(double population, Preproject preproject);
 }

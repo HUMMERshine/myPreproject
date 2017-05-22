@@ -104,6 +104,9 @@
 							</div>
 						</form>
 						<div style="text-align: right;">
+							<button id="btn_create" type="button" class="btn btn-warning">
+								<span class="glyphicon" aria-hidden="true"></span>创建预案
+							</button>
 							<button id="btn_match" type="button" class="btn btn-success">
 								<span class="glyphicon" aria-hidden="true"></span>预案匹配
 							</button>
@@ -125,7 +128,7 @@
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal"
 							aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="myModalLabel">操作详情</h4>
+						<h4 class="modal-title" id="myModalLabel">预案详情</h4>
 					</div>
 					<div class="modal-body">
 						<form class="form-horizontal col-center-block" role="form">
@@ -181,8 +184,7 @@
 						<table id=goodsInfo class="table-bordered"></table>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-success" data-dismiss="modal">同意</button>
-						<button type="button" class="btn btn-danger" data-dismiss="modal">不同意</button>
+						<button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
 					</div>
 				</div>
 			</div>

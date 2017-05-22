@@ -128,6 +128,26 @@ public class GoodsController extends BaseController<Goods> {
 		return ar;
 	}
 	
+	@RequestMapping(value="findbycode", method=RequestMethod.POST)
+	@ResponseBody
+	public AjaxRes findByCode(Goods o){
+		AjaxRes ar=getAjaxRes();
+		//if(ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_BUTTON))){		
+			try {
+				System.out.println("&&&&%%%%%%&&&&&&");
+				System.out.println(o);
+				List<Goods> list=service.findByCode(o);
+				System.out.println(list);
+				boolean exist = list.size() > 0 ? true : false;
+				ar.setSucceed(exist);
+			} catch (Exception e) {
+				logger.error(e.toString(),e);
+				ar.setFailMsg(Const.DATA_FAIL);
+			}
+		//}
+		return ar;
+	}
+	
 	@RequestMapping(value="update", method=RequestMethod.POST)
 	@ResponseBody
 	public AjaxRes update(Goods o){

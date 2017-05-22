@@ -29,32 +29,32 @@
 						    <div class="form-group">
 						        <label class="col-sm-3 control-label">物资编码：</label>
 						        <div class="col-sm-9" >
-						            <input type="text" id="approval_proposal" class="form-control" placeholder="请输入文本">
+						            <input type="text" id="goods_code" class="form-control" placeholder="请输入文本">
 						        </div>
 						    </div>
 						    <div class="form-group">
 						        <label class="col-sm-3 control-label">物资数量：</label>
 						        <div class="col-sm-9" >
-						            <input type="text" id="approval_proposal" class="form-control" placeholder="请输入文本"> 
+						            <input type="text" id="goods_amount" class="form-control" placeholder="请输入文本"> 
 						        </div>
 						    </div>
 						    <div class="form-group">
 						        <label class="col-sm-3 control-label">物资批次：</label>
 						        <div class="col-sm-9" >
-						            <input type="text" id="approval_proposal" class="form-control" placeholder="请输入文本">
+						            <input type="text" id="goods_priority" class="form-control" placeholder="请输入文本">
 						        </div>
 						    </div>
 						    <div class="form-group">
 						        <label class="col-sm-3 control-label">救援周期：</label>
 						        <div class="col-sm-9" >
-						            <input type="text" id="approval_proposal" class="form-control" placeholder="请输入文本"> 
+						            <input type="text" id="goods_cycle" class="form-control" placeholder="请输入文本"> 
 						        </div>
 						    </div>
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-				<button type="button" class="btn btn-primary modal-close">提交</button>
+				<button type="button" id="btn_cancel" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" id="btn_submit" class="btn btn-primary modal-close">提交</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->

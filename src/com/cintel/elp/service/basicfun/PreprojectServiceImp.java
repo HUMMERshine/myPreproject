@@ -23,11 +23,15 @@ import com.cintel.elp.service.base.BaseServiceImp;
 import com.cintel.elp.task.utils.GoodsExcel;
 import com.cintel.elp.task.utils.MatchUtil;
 import com.cintel.elp.task.utils.PreOperateExcel;
+import com.cintel.elp.task.utils.PredictGoods;
 import com.cintel.elp.task.utils.PreprojectExcel;
 
 @Service("PreprojectService")
 public class PreprojectServiceImp extends BaseServiceImp<Preproject> implements PreprojectService {
 
+	@Autowired
+	PreGoodsService preGoods_service;
+	
 	public void preprojectExport(PreprojectToExcel excel, Workbook workbook, List<Preproject> list, String sheetName,
 			String contentName) throws Exception {
 		List<PreprojectExcel> lists = new ArrayList<>();
@@ -119,5 +123,26 @@ public class PreprojectServiceImp extends BaseServiceImp<Preproject> implements 
 		
 		return result;
 	}
+
+	@Override
+	public Page<PreGoods> getGoods(double population, Preproject preproject) {
+		Page<PreGoods> page = new Page<>();
+		
+		List<PreGoods> list = new ArrayList<>();
+		list.addAll(PredictGoods.getFood(population));
+		list.addAll(PredictGoods.getMedicine(population));
+		list.addAll(PredictGoods.getShelter(population));
+		
+		for(PreGoods preGoods : list){
+			preGoods.setPreproject(preproject);
+			System.out.println(preGoods);
+			
+			preGoods_service.insert(preGoods);
+		}
+		
+		return null;
+	}
+	
+	
 	
 }

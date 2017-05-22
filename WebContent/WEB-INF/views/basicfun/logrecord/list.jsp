@@ -19,7 +19,7 @@
 	content: "";
 }
 
-    /* .table>tbody>tr.warning>td{
+/* .table>tbody>tr.warning>td{
     background-color: #F7C709;
     border-color: #F7C709;
     }
@@ -27,7 +27,6 @@
     background-color: #F7C709;
     border-color: #F7C709;
     } */
-
 .table-hover {
 	border: 1px solid #ddd;
 	border-left: 4px solid #ddd;
@@ -43,7 +42,7 @@
 
 					<div class="ibox-content">
 
-							<!-- <div id="toolbar" class="btn-group hidden-xs">
+						<!-- <div id="toolbar" class="btn-group hidden-xs">
 					<button id="btn_add" type="button" class="btn btn-primary">
 						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
 					</button>
@@ -52,11 +51,12 @@
 					</button>
 				</div>  style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"-->
 
-							<table id=operateinfo style="word-break:break-all; word-wrap:break-all;"></table>
-							<div style="text-align: right;">
-								<button id="btn_cancel" type="button" class="btn btn-warning">
+						<table id=operateinfo class="table-bordered"
+							style="word-break: break-all; word-wrap: break-all;"></table>
+						<div style="text-align: right;">
+							<!-- <button id="btn_cancel" type="button" class="btn btn-warning">
 									<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>返回
-								</button>
+								</button> -->
 						</div>
 					</div>
 				</div>
@@ -72,6 +72,6 @@
 		src="${jypath}/static/js/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
 	<script src="${jypath}/static/js/basicfun/preproject/preproject.js"></script>
 	<script src="${jypath}/static/js/sweetalert/sweetalert.min.js"></script>
-	<script src="${jypath}/static/js/basicfun/logrecord/list3.js"></script>
+	<script src="${jypath}/static/js/basicfun/logrecord/logrecord.js"></script>
 </body>
 </html>
