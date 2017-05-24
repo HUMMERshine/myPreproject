@@ -24,11 +24,6 @@ var ButtonInit = function() {
 	var postdata = {};
 	
 	oInit.Init = function() {
-//		$('#btn_cancel')
-//				.click(
-//						function() {
-//							window.location.href = '/elpdemo/webpage/modules/basicfun/preproject/list.jsp';
-//						});
 		$('#btn_create')
 		.click(
 				function() {
@@ -47,6 +42,17 @@ var ButtonInit = function() {
 				 }else{
 					 //传递预案。
 					 swal("预案选择完成，开始进行救援任务！");
+					 //window.location.href="http://192.168.11.30:8080/mypaper";
+					 JY.Ajax.doRequest(null,jypath +'/backstage/preproject/getFinalData',{pre_id:selects[0].pre_id},function(data){
+						 JY.Ajax.doRequest(null,'http://192.168.11.30:8080/mypaper/reqgood/receivereq',{gid:resolveData(data)},function(data){
+							 console.log(data);
+							});
+						});
+					
+					 setTimeout(function () { 
+						 window.location.href="http://192.168.11.30:8080/mypaper";
+					    }, 500);
+					 
 				 }
 		});
 	};
@@ -337,4 +343,15 @@ function getGoods(curId){
 	// title: '匹配度'
 	// }
 	});
+}
+
+
+function resolveData(data){
+	list = data.obj.list;
+	var res = "";
+	for(var  i in list){
+		res += list[i].goods.code + "_" + list[i].amount + "_" +list[i].priority + "_" + list[i].save_cycle+ "*";
+	}
+	if(res.length > 0) res = res.substring(0, res.length-1);
+	return res;
 }

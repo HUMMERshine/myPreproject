@@ -75,7 +75,7 @@ public class PreprojectController extends BaseController<Preproject> {
 
 	@Autowired
 	private AccountService service4;
-	
+
 	@Autowired
 	private GoodsService goods_service;
 
@@ -188,11 +188,10 @@ public class PreprojectController extends BaseController<Preproject> {
 		}
 		return ar;
 	}
-	
+
 	@RequestMapping(value = "findPreGoodsByPage2", method = RequestMethod.POST)
 	@ResponseBody
-	public AjaxRes findPreGoodsByPage2(
-			@RequestParam(value = "pre_id2", required = false) String pre_id2) {
+	public AjaxRes findPreGoodsByPage2(@RequestParam(value = "pre_id2", required = false) String pre_id2) {
 		AjaxRes ar = getAjaxRes();
 		if (ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_MENU, "/backstage/preproject/index"))) {
 			try {
@@ -215,11 +214,10 @@ public class PreprojectController extends BaseController<Preproject> {
 		}
 		return ar;
 	}
-	
+
 	@RequestMapping(value = "findPreGoodsByPage3", method = RequestMethod.POST)
 	@ResponseBody
-	public AjaxRes findPreGoodsByPage3(
-			@RequestParam(value = "pre_id", required = false) String pre_id) {
+	public AjaxRes findPreGoodsByPage3(@RequestParam(value = "pre_id", required = false) String pre_id) {
 		AjaxRes ar = getAjaxRes();
 		if (ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_MENU, "/backstage/preproject/index"))) {
 			try {
@@ -271,6 +269,32 @@ public class PreprojectController extends BaseController<Preproject> {
 		}
 		return ar;
 	}
+	
+	@RequestMapping(value = "getFinalData", method = RequestMethod.POST)
+	@ResponseBody
+	public AjaxRes findFinalGoods(Page<PreGoods> page, @RequestParam(value = "pre_id", required = false) String pre_id) {
+		AjaxRes ar = getAjaxRes();
+		if (ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_MENU, "/backstage/preproject/index"))) {
+			try {
+				System.out.println("********" + page + "__________ " + pre_id);
+				PreGoods o = new PreGoods();
+				Preproject preproject = new Preproject();
+				preproject.setPre_id(pre_id);
+				o.setPreproject(preproject);
+				List<PreGoods> list = pregoods_service.findPreGoodsAll(o);
+				// System.out.println(page.getResults().size());
+				System.out.println(list);
+				Map<String, Object> p = new HashMap<String, Object>();
+				p.put("permitBtn", getPermitBtn(Const.RESOURCES_TYPE_BUTTON));
+				p.put("list", list);
+				ar.setSucceed(p);
+			} catch (Exception e) {
+				logger.error(e.toString(), e);
+				ar.setFailMsg(Const.DATA_FAIL);
+			}
+		}
+		return ar;
+	}
 
 	@RequestMapping(value = "updatePregoods", method = RequestMethod.POST)
 	@ResponseBody
@@ -279,7 +303,8 @@ public class PreprojectController extends BaseController<Preproject> {
 		AjaxRes ar = getAjaxRes();
 		if (ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_MENU, "/backstage/preproject/index"))) {
 			try {
-				//System.out.println(preGoods_id + "********" + code + "__________ " + pre_id);
+				// System.out.println(preGoods_id + "********" + code +
+				// "__________ " + pre_id);
 				Goods goods = new Goods();
 				goods.setCode(code);
 				PreGoods preGoods = new PreGoods();
@@ -291,12 +316,12 @@ public class PreprojectController extends BaseController<Preproject> {
 				preGoods.setPre_goods_id(Integer.parseInt(preGoods_id));
 				preGoods.setPriority(priority);
 				preGoods.setSave_cycle(Integer.parseInt(save_cycle));
-				
+
 				pregoods_service.update(preGoods);
-				
+
 				Map<String, Object> p = new HashMap<String, Object>();
 				p.put("permitBtn", getPermitBtn(Const.RESOURCES_TYPE_BUTTON));
-				//p.put("list", result);
+				// p.put("list", result);
 				ar.setSucceed(p);
 			} catch (Exception e) {
 				logger.error(e.toString(), e);
@@ -305,15 +330,15 @@ public class PreprojectController extends BaseController<Preproject> {
 		}
 		return ar;
 	}
-	
+
 	@RequestMapping(value = "insertPregoods", method = RequestMethod.POST)
 	@ResponseBody
-	public AjaxRes insertPregoods(String amount, String pre_id, String code, String save_cycle,
-			String priority) {
+	public AjaxRes insertPregoods(String amount, String pre_id, String code, String save_cycle, String priority) {
 		AjaxRes ar = getAjaxRes();
 		if (ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_MENU, "/backstage/preproject/index"))) {
 			try {
-				//System.out.println(preGoods_id + "********" + code + "__________ " + pre_id);
+				// System.out.println(preGoods_id + "********" + code +
+				// "__________ " + pre_id);
 				Goods goods = new Goods();
 				goods.setCode(code);
 				PreGoods preGoods = new PreGoods();
@@ -324,12 +349,12 @@ public class PreprojectController extends BaseController<Preproject> {
 				preGoods.setAmount(Double.parseDouble(amount));
 				preGoods.setPriority(priority);
 				preGoods.setSave_cycle(Integer.parseInt(save_cycle));
-				
+
 				pregoods_service.insert(preGoods);
-				
+
 				Map<String, Object> p = new HashMap<String, Object>();
 				p.put("permitBtn", getPermitBtn(Const.RESOURCES_TYPE_BUTTON));
-				//p.put("list", result);
+				// p.put("list", result);
 				ar.setSucceed(p);
 			} catch (Exception e) {
 				logger.error(e.toString(), e);
@@ -338,7 +363,7 @@ public class PreprojectController extends BaseController<Preproject> {
 		}
 		return ar;
 	}
-	
+
 	@RequestMapping(value = "deletePregoods", method = RequestMethod.POST)
 	@ResponseBody
 	public AjaxRes deletePregoods(String preGoods_id) {
@@ -348,12 +373,12 @@ public class PreprojectController extends BaseController<Preproject> {
 				System.out.println(preGoods_id + "********" + preGoods_id + "__________ " + preGoods_id);
 				PreGoods preGoods = new PreGoods();
 				preGoods.setPre_goods_id(Integer.parseInt(preGoods_id));
-				
+
 				pregoods_service.delete(preGoods);
-				
+
 				Map<String, Object> p = new HashMap<String, Object>();
 				p.put("permitBtn", getPermitBtn(Const.RESOURCES_TYPE_BUTTON));
-				//p.put("list", result);
+				// p.put("list", result);
 				ar.setSucceed(p);
 			} catch (Exception e) {
 				logger.error(e.toString(), e);
@@ -362,7 +387,7 @@ public class PreprojectController extends BaseController<Preproject> {
 		}
 		return ar;
 	}
-	
+
 	@RequestMapping(value = "deletePregoodsByPreId", method = RequestMethod.POST)
 	@ResponseBody
 	public AjaxRes deletePregoodsByPreId(String pre_id) {
@@ -373,12 +398,12 @@ public class PreprojectController extends BaseController<Preproject> {
 				Preproject preproject = new Preproject();
 				preproject.setPre_id(pre_id);
 				preGoods.setPreproject(preproject);
-				if(pre_id != null){
+				if (pre_id != null) {
 					pregoods_service.deleteByPreId(preGoods);
 				}
 				Map<String, Object> p = new HashMap<String, Object>();
 				p.put("permitBtn", getPermitBtn(Const.RESOURCES_TYPE_BUTTON));
-				//p.put("list", result);
+				// p.put("list", result);
 				ar.setSucceed(p);
 			} catch (Exception e) {
 				logger.error(e.toString(), e);
@@ -458,7 +483,7 @@ public class PreprojectController extends BaseController<Preproject> {
 			try {
 				System.out.println("***********");
 				System.out.println(preOperate);
-
+     
 				List<PreOperate> list = preoperate_service.find(preOperate);// 搜索出已经审核过的那条记录
 				System.out.println("list:" + list);
 				PreOperate updatedPreOperate = list.get(0);
@@ -589,31 +614,6 @@ public class PreprojectController extends BaseController<Preproject> {
 		return ar;
 	}
 
-	public void exportToExcel(List<Preproject> list, String tableName, String sheetName, String contentName) {
-		PreprojectToExcel excel = new PreprojectToExcel();
-		Workbook workbook = new HSSFWorkbook();
-		List<PreprojectExcel> lists = new ArrayList<>();
-		for (Preproject preproject : list) {
-			lists.add(new PreprojectExcel(preproject));
-		}
-		try {
-			/*
-			 * 向sheet（预案信息表）内插入lists的内容，预案信息是表内的第一行标题
-			 * workbook代表该excel，名字在fos中填写。
-			 */
-			excel.preprojectExport(workbook, lists, PreprojectExcel.getStrings(), sheetName, contentName);
-			FileOutputStream fos = new FileOutputStream(excelPath + tableName + ".xls");
-			workbook.write(fos);
-
-			if (null != fos) {
-				fos.close();
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 	public void importFormExcel(String filePath) {
 		PreprojectToExcel pte = new PreprojectToExcel();
 		try {
@@ -737,47 +737,74 @@ public class PreprojectController extends BaseController<Preproject> {
 		AjaxRes ar = getAjaxRes();
 		if (ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_BUTTON))) {
 			try {
-				PreprojectToExcel excel = new PreprojectToExcel();
-				Workbook workbook = new HSSFWorkbook();
-
-				List<Preproject> pres = preproject_service.find(o);
-				preproject_service.preprojectExport(excel, workbook, pres, "预案信息", "预案基本信息");
-
-				PreGoods preGoods = new PreGoods();
-				preGoods.setPreproject(o);
-				List<PreGoods> goods = pregoods_service.find(preGoods);
-				List<PreGoods> goodsList = new ArrayList<>();
-				for (int i = 0; i < goods.size(); i++) {
-					goodsList.add(goods.get(i));
-					if (i == goods.size() - 1
-							|| !goods.get(i).getSave_cycle().equals(goods.get(i + 1).getSave_cycle())) {
-						preproject_service.preGoodsExport(excel, workbook, goodsList,
-								goods.get(i).getSave_cycle() + "小时救援物资信息", "物资基本信息");
-						goodsList.clear();
-					}
-				}
-
-				PreOperate preOperate = new PreOperate();
-				preOperate.setPreproject(o);
-				List<PreOperate> operates = preoperate_service.findByPreId(preOperate);
-				preproject_service.preOperateExport(excel, workbook, operates, "操作审核信息", "预案的操作和审核记录");
-				/*
-				 * 向sheet（预案信息表）内插入lists的内容，预案信息是表内的第一行标题
-				 * workbook代表该excel，名字在fos中填写。
-				 */
-				FileOutputStream fos = new FileOutputStream("/Users/lishutao/Documents/excelexport/"
-						+ (o.getPre_id() + "-" + pres.get(0).getPre_name()) + ".xls");
-				workbook.write(fos);
-
-				if (null != fos) {
-					fos.close();
-				}
+				exportOneImpl(o);
 			} catch (Exception e) {
 				logger.error(e.toString(), e);
 				ar.setFailMsg(Const.DATA_FAIL);
 			}
 		}
 		return ar;
+	}
+
+	@RequestMapping(value = "exportAll", method = RequestMethod.POST)
+	@ResponseBody
+	public AjaxRes exportAll() {
+		AjaxRes ar = getAjaxRes();
+		try {
+			List<Preproject> list = preproject_service.findAll(new Preproject());
+			System.out.println(list);
+			for (Preproject o : list) {
+				exportOneImpl(o);
+			}
+		} catch (Exception e) {
+			logger.error(e.toString(), e);
+			ar.setFailMsg(Const.DATA_FAIL);
+		}
+		return ar;
+	}
+
+	public void exportOneImpl(Preproject o) {
+		PreprojectToExcel excel = new PreprojectToExcel();
+		Workbook workbook = new HSSFWorkbook();
+
+		try {
+			List<Preproject> pres = preproject_service.find(o);
+			preproject_service.preprojectExport(excel, workbook, pres, "预案信息", "预案基本信息");
+
+			PreGoods preGoods = new PreGoods();
+			preGoods.setPreproject(o);
+			List<PreGoods> goods = pregoods_service.find(preGoods);
+			List<PreGoods> goodsList = new ArrayList<>();
+			for (int i = 0; i < goods.size(); i++) {
+				goodsList.add(goods.get(i));
+				if (i == goods.size() - 1 || !goods.get(i).getSave_cycle().equals(goods.get(i + 1).getSave_cycle())) {
+					preproject_service.preGoodsExport(excel, workbook, goodsList,
+							goods.get(i).getSave_cycle() + "小时救援物资信息", "物资基本信息");
+					goodsList.clear();
+				}
+			}
+
+			PreOperate preOperate = new PreOperate();
+			preOperate.setPreproject(o);
+			List<PreOperate> operates = preoperate_service.findByPreId(preOperate);
+			if (operates.size() != 0) {
+				preproject_service.preOperateExport(excel, workbook, operates, "操作审核信息", "预案的操作和审核记录");
+
+			}
+			/*
+			 * 向sheet（预案信息表）内插入lists的内容，预案信息是表内的第一行标题
+			 * workbook代表该excel，名字在fos中填写。
+			 */
+			FileOutputStream fos = new FileOutputStream(
+					excelPath + (o.getPre_id() + "-" + pres.get(0).getPre_name()) + ".xls");
+			workbook.write(fos);
+
+			if (null != fos) {
+				fos.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@RequestMapping(value = "findOperateByPage", method = RequestMethod.POST)

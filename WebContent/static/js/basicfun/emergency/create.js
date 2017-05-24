@@ -160,6 +160,20 @@ var ButtonInit = function() {
 //				// 传递预案。
 //				swal("预案选择完成，开始进行救援任务！");
 //			}
+			swal("预案选择完成，开始进行救援任务！");
+			 //window.location.href="http://192.168.11.30:8080/mypaper";
+			 JY.Ajax.doRequest(null,jypath +'/backstage/preproject/getFinalData',{pre_id:"1000000001"},function(data){
+				 JY.Ajax.doRequest(null,'http://192.168.11.30:8080/mypaper/reqgood/receivereq',{gid:resolveData(data)},function(data){
+					 console.log(data);
+					 JY.Ajax.doRequest(null,jypath +'/backstage/emergency/cleanPreproject',{},function(data){
+							console.log(data);
+						});
+					});
+				});
+			
+			 setTimeout(function () { 
+				 window.location.href="http://192.168.11.30:8080/mypaper";
+			    }, 500);
 		});
 	};
 

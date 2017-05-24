@@ -34,7 +34,7 @@
   	<select id="find" resultMap="base" parameterType="PreOperate">
 		select * from pre_operate t  where 1 = 1
 		<if test="pre_operate_id != null and pre_operate_id != '' ">
-        	AND t."pre_id"=#{pre_id}
+        	AND t."pre_operate_id"=#{pre_operate_id}
        </if>
        ORDER BY operate_time<!-- approval_state,approval_result -->
   	</select>

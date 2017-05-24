@@ -34,7 +34,14 @@
        <if test="pre_id != null and pre_id!='' ">
         	AND t."pre_id"=#{pre_id}
        </if>
-    </select> 
+    </select>
+    <select id="findAll"  resultMap="base" parameterType="Preproject">
+       SELECT t.*, pre_condition.* FROM preproject t , pre_condition  WHERE t.pre_id = pre_condition.pre_id
+       <if test="pre_id != null and pre_id!='' ">
+        	AND t."pre_id"=#{pre_id}
+       </if>
+       ORDER BY t.pre_id
+    </select>  
     	<update id="update" parameterType="Preproject">
 		UPDATE preproject 
 		SET 

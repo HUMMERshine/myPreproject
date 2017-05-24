@@ -16,4 +16,5 @@ import com.cintel.elp.repository.base.JYBatis;
 @JYBatis
 public interface PreprojectDao extends BaseDao<Preproject> {
 	//public List<PreOperate> findIt(PreOperate page);
+	public List<Preproject> findAll(Preproject p);
 }

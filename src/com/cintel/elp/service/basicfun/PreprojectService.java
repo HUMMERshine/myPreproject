@@ -19,7 +19,11 @@ public interface PreprojectService extends BaseService<Preproject>{
 			String contentName) throws Exception ;
 	public void preOperateExport(PreprojectToExcel excel, Workbook workbook, List<PreOperate> list, String sheetName,
 			String contentName) throws Exception ;
+	public void exportToExcel(List<Preproject> list, String tableName, String sheetName, String contentName, String excelPath);
+	
 	public Page<Preproject> match(Map<String, Object> map);
 	
 	public Page<PreGoods> getGoods(double population, Preproject preproject);
+	
+	public List<Preproject> findAll(Preproject p);
 }

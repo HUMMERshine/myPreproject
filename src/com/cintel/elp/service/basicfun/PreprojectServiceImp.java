@@ -1,5 +1,6 @@
 package com.cintel.elp.service.basicfun;
 
+import java.io.FileOutputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jplus.hyberbin.excel.PreprojectToExcel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class PreprojectServiceImp extends BaseServiceImp<Preproject> implements 
 
 	@Autowired
 	PreGoodsService preGoods_service;
+	
+	@Autowired
+	PreprojectDao preprojectDao;
 	
 	public void preprojectExport(PreprojectToExcel excel, Workbook workbook, List<Preproject> list, String sheetName,
 			String contentName) throws Exception {
@@ -59,6 +64,31 @@ public class PreprojectServiceImp extends BaseServiceImp<Preproject> implements 
 			lists.add(new PreOperateExcel(preOperate));
 		}
 		excel.preprojectExport(workbook, lists, PreOperateExcel.getStrings(), sheetName, contentName);
+	}
+	
+	public void exportToExcel(List<Preproject> list, String tableName, String sheetName, String contentName, String excelPath) {
+		PreprojectToExcel excel = new PreprojectToExcel();
+		Workbook workbook = new HSSFWorkbook();
+		List<PreprojectExcel> lists = new ArrayList<>();
+		for (Preproject preproject : list) {
+			lists.add(new PreprojectExcel(preproject));
+		}
+		try {
+			/*
+			 * 向sheet（预案信息表）内插入lists的内容，预案信息是表内的第一行标题
+			 * workbook代表该excel，名字在fos中填写。
+			 */
+			excel.preprojectExport(workbook, lists, PreprojectExcel.getStrings(), sheetName, contentName);
+			FileOutputStream fos = new FileOutputStream(excelPath + tableName + ".xls");
+			workbook.write(fos);
+
+			if (null != fos) {
+				fos.close();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -141,6 +171,12 @@ public class PreprojectServiceImp extends BaseServiceImp<Preproject> implements 
 		}
 		
 		return null;
+	}
+
+	@Override
+	public List<Preproject> findAll(Preproject p) {
+		// TODO Auto-generated method stub
+		return preprojectDao.findAll(p);
 	}
 	
 	

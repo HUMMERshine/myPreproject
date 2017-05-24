@@ -1,19 +1,19 @@
 var local_pre_id;
 var local_preGoods_id;
-var flag;//1:新增物资；2:更新预案；3:删除预案;
+var flag;// 1:新增物资；2:更新预案；3:删除预案;
 $(function () {
 	JY.Dict.setSelect("selectisValid","isValid",2,'全部');
 	getbaseList();
-	//增加回车事件
+	// 增加回车事件
 	$("#baseForm").keydown(function(e){
 		 keycode = e.which || e.keyCode;
 		 if (keycode==13) {
 			 search();
 		 }
 	});
-	//新加
+	// 新加
 	$('#addBtn').on('click', function(e) {
-		//通知浏览器不要执行与事件关联的默认动作	
+		// 通知浏览器不要执行与事件关联的默认动作
 		$("#pre_id_add").attr("disabled",false);
 		e.preventDefault();		
 		cleanForm();
@@ -40,7 +40,7 @@ $(function () {
 			         }
 			     });  
 			 }		
-		},function(){//该方法作用是在新建预案时，如果点击取消键，删除已经保存的所有物资（按照preid删除，索引慎用）
+		},function(){// 该方法作用是在新建预案时，如果点击取消键，删除已经保存的所有物资（按照preid删除，索引慎用）
 			console.log("lishutao!");
 			JY.Ajax.doRequest(null,jypath +'/backstage/preproject/deletePregoodsByPreId',{pre_id:$("#pre_id_add").val()},function(data){
 				console.log(data);
@@ -50,9 +50,9 @@ $(function () {
 		getpregoodstable();
 	});
 	
-	//批量删除
+	// 批量删除
 	$('#delBatchBtn').on('click', function(e) {
-		//通知浏览器不要执行与事件关联的默认动作		
+		// 通知浏览器不要执行与事件关联的默认动作
 		e.preventDefault();
 		var chks =[];    
 		$('#baseTable input[name="ids"]:checked').each(function(){chks.push($(this).val());});     
@@ -65,12 +65,14 @@ $(function () {
 	});
 
 	$('.modal-close').click(function () {
-//		var approval_result = $('#wrap input[name="approval_result"]:checked').val();
-//		var approval_proposal = $('#approval_proposal').val();
-//		console.log(pre_operate_id_temp);
-//		JY.Ajax.doRequest(null,jypath +'/backstage/',{pre_operate_id:pre_operate_id_temp, approval_result:approval_result,approval_proposal:approval_proposal},function(data){
+// var approval_result = $('#wrap input[name="approval_result"]:checked').val();
+// var approval_proposal = $('#approval_proposal').val();
+// console.log(pre_operate_id_temp);
+// JY.Ajax.doRequest(null,jypath
+// +'/backstage/',{pre_operate_id:pre_operate_id_temp,
+// approval_result:approval_result,approval_proposal:approval_proposal},function(data){
 //			
-//		});
+// });
 		
 		$('#addpregoodsModal').modal('hide');
 	});
@@ -128,7 +130,7 @@ $(function () {
 				getpregoodstable();
 		    }, 500);
 		}else if(flag == 3){
-			//swal("Here's a message!");
+			// swal("Here's a message!");
 			swal({
 				  title: "确认删除?",
 				  type: "warning",
@@ -157,6 +159,11 @@ $(function () {
 		}
 		
 	});
+	$('#exportAll').click(function () {
+		JY.Ajax.doRequest(null,jypath +'/backstage/preproject/exportAll',{},function(data){
+		});
+		JY.Model.info("导出成功");
+	});
 });
 
 function cleanForm(){
@@ -183,7 +190,7 @@ function getbaseList(init){
      	 var pageNum=list.pageNum,pageSize=list.pageSize,totalRecord=list.totalRecord;
 		 var html="";
 		 if(results!=null&&results.length>0){
-	       	var leng=(pageNum-1)*pageSize;//计算序号
+	       	var leng=(pageNum-1)*pageSize;// 计算序号
 	       	for(var i = 0;i<results.length;i++){
 	       		console.log(l);
 	           	var l=results[i];       
@@ -198,7 +205,8 @@ function getbaseList(init){
 	       		html+="<td class='center'>"+JY.Object.notEmpty(parseInt(l.preCondition.disaster_people, 10))+"</td>";
 	       		html+="<td class='center'>"+JY.Object.notEmpty(l.preCondition.climate)+"</td>";
 	       		html+="<td class='center'>"+JY.Object.notEmpty(l.preCondition.geography)+"</td>";
-	       		//html+="<td class='center'>"+JY.Object.notEmpty(l.match)+"</td>";
+	       		// html+="<td
+				// class='center'>"+JY.Object.notEmpty(l.match)+"</td>";
 	       		html+=JY.Tags.setFunction(l.pre_id,permitBtn);
 	       		html+="</tr>";		 
 	        } 
@@ -207,7 +215,7 @@ function getbaseList(init){
 	    }else{
 	       html+="<tr><td colspan='9' class='center'>没有相关数据</td></tr>";
 	       $("#baseTable tbody").append(html);
-	       $("#pageing ul").empty();//清空分页
+	       $("#pageing ul").empty();// 清空分页
 	     }		
 	    JY.Model.loadingClose();
 	});
@@ -283,20 +291,21 @@ function operate(pre_id){
 	JY.Model.handle("preoperateDiv","预案操作信息","返回","下一步",function(){
 		$(this).dialog("close");
 	},function(){
-//		var chks =[];    
-//		$('#preTable input[name="ids"]:checked').each(function(){chks.push($(this).val());});    
-//		if(chks.length==0) {
-//			JY.Model.info("请选择一个预案!"); 
-//		}
-//		else if(chks.length > 1) {
-//			JY.Model.info("只能选择一个预案!"); 
-//		}
-//		else {
-//			$(this).dialog("close");
-//			disnotice(chks.toString(), dis_ID);
-//		}
+// var chks =[];
+// $('#preTable
+// input[name="ids"]:checked').each(function(){chks.push($(this).val());});
+// if(chks.length==0) {
+// JY.Model.info("请选择一个预案!");
+// }
+// else if(chks.length > 1) {
+// JY.Model.info("只能选择一个预案!");
+// }
+// else {
+// $(this).dialog("close");
+// disnotice(chks.toString(), dis_ID);
+// }
 	});
-	//disnotice(1,1);
+	// disnotice(1,1);
 	getoperate(pre_id);
 }
 
@@ -311,7 +320,7 @@ function getoperate(pre_id){
          	 var pageNum=list.pageNum,pageSize=list.pageSize,totalRecord=list.totalRecord;
         	 var html="";
     		 if(results!=null&&results.length>0){
-        		 var leng=(pageNum-1)*pageSize;//计算序号
+        		 var leng=(pageNum-1)*pageSize;// 计算序号
         		 for(var i = 0;i<results.length;i++){
             		 var l=results[i];
             		 console.log("************************");
@@ -323,7 +332,7 @@ function getoperate(pre_id){
             		 html+="<td class='center'>"+JY.Object.notEmpty(l.operater_name)+"</td>";
             		 html+="<td class='center'>"+JY.Object.notEmpty(getTime(l.operate_time))+"</td>";
             		 html+="<td class='center'>"+JY.Object.notEmpty(l.operate_describe)+"</td>";
-//            		 html+=JY.Tags.setFunction(l.goods_ID,permitBtn);
+// html+=JY.Tags.setFunction(l.goods_ID,permitBtn);
             		 html+="</tr>";		 
             	 } 
         		 $("#preoperateTable tbody").append(html);
@@ -331,7 +340,7 @@ function getoperate(pre_id){
         	 }else{
         		html+="<tr><td colspan='9' class='center'>没有相关数据</td></tr>";
         		$("#preoperateTable tbody").append(html);
-        		$("#preoperatepageing ul").empty();//清空分页
+        		$("#preoperatepageing ul").empty();// 清空分页
         	 }	
         	 JY.Model.loadingClose();
 	});
@@ -340,7 +349,7 @@ function getoperate(pre_id){
 function exportOne(pre_id){
 	JY.Ajax.doRequest(null,jypath +'/backstage/preproject/exportOne',{pre_id:pre_id},function(data){
 	});
-	JY.Model.info("导入成功");
+	JY.Model.info("导出成功");
 }
 
 function getpregoodstable(){
@@ -357,11 +366,13 @@ function getpregoodstable(){
      	 var pageNum=list.pageNum,pageSize=list.pageSize,totalRecord=list.totalRecord;
 		 var html="";
 		 if(results!=null&&results.length>0){
-	       	var leng=(pageNum-1)*pageSize;//计算序号
+	       	var leng=(pageNum-1)*pageSize;// 计算序号
 	       	for(var i = 0;i<results.length;i++){
 	           	var l=results[i];      
 	           	html+="<tr>";
-	           	//html+="<td class='center'><label> <input type='checkbox' name='ids' value='"+l.pre_goods_id+"' class='ace' /> <span class='lbl'></span></label></td>";
+	           	// html+="<td class='center'><label> <input type='checkbox'
+				// name='ids' value='"+l.pre_goods_id+"' class='ace' /> <span
+				// class='lbl'></span></label></td>";
 	           	html+="<td class='center'>"+JY.Object.notEmpty(i + leng + 1)+"</td>";
 	           	html+="<td class='center'>"+JY.Object.notEmpty(l.goods.code)+"</td>";
 	           	html+="<td class='center'>"+JY.Object.notEmpty(l.goods.goods_name)+"</td>";
@@ -388,7 +399,7 @@ function getpregoodstable(){
 	    }else{
 	       html+="<tr><td colspan='9' class='center'>没有相关数据</td></tr>";
 	       $("#pregoodsTable tbody").append(html);
-	       $("#pregoodspageing ul").empty();//清空分页
+	       $("#pregoodspageing ul").empty();// 清空分页
 	     }		
 	    JY.Model.loadingClose();
 	});
@@ -408,11 +419,13 @@ function getpregoodstable2(){
      	 var pageNum=list.pageNum,pageSize=list.pageSize,totalRecord=list.totalRecord;
 		 var html="";
 		 if(results!=null&&results.length>0){
-	       	var leng=(pageNum-1)*pageSize;//计算序号
+	       	var leng=(pageNum-1)*pageSize;// 计算序号
 	       	for(var i = 0;i<results.length;i++){
 	           	var l=results[i];      
 	           	html+="<tr>";
-	           	//html+="<td class='center'><label> <input type='checkbox' name='ids' value='"+l.pre_goods_id+"' class='ace' /> <span class='lbl'></span></label></td>";
+	           	// html+="<td class='center'><label> <input type='checkbox'
+				// name='ids' value='"+l.pre_goods_id+"' class='ace' /> <span
+				// class='lbl'></span></label></td>";
 	           	html+="<td class='center'>"+JY.Object.notEmpty(i + leng + 1)+"</td>";
 	           	html+="<td class='center'>"+JY.Object.notEmpty(l.goods.code)+"</td>";
 	           	html+="<td class='center'>"+JY.Object.notEmpty(l.goods.goods_name)+"</td>";
@@ -439,14 +452,14 @@ function getpregoodstable2(){
 	    }else{
 	       html+="<tr><td colspan='9' class='center'>没有相关数据</td></tr>";
 	       $("#pregoodsTable tbody").append(html);
-	       $("#pregoodspageing ul").empty();//清空分页
+	       $("#pregoodspageing ul").empty();// 清空分页
 	     }		
 	    JY.Model.loadingClose();
 	});
 }
 
 function editpregoods(pre_goods_id, old_code, old_amount, old_priority, old_save_cycle){
-	//console.log(pre_goods_id + " " + old_code + " " + old_amount);
+	// console.log(pre_goods_id + " " + old_code + " " + old_amount);
 	local_preGoods_id = pre_goods_id;
 	$('#addpregoodstitle').text("修改物资");
 	$('#addpregoodsModal').modal();

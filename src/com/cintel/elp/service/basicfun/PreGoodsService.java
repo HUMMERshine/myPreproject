@@ -14,4 +14,6 @@ public interface PreGoodsService extends BaseService<PreGoods>{
 	Page<PreGoods> findByPage2(PreGoods o, Page<PreGoods> page);
 
 	Page<PreGoods> findByPage3(PreGoods o);
+	
+	List<PreGoods> findPreGoodsAll(PreGoods o);
 }

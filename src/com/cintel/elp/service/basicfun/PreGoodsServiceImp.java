@@ -37,6 +37,12 @@ public class PreGoodsServiceImp extends BaseServiceImp<PreGoods> implements PreG
 		page.setResults(dao.findByPage3(o));
 		return page;
 	}
+
+	@Override
+	public List<PreGoods> findPreGoodsAll(PreGoods o) {
+		// TODO Auto-generated method stub
+		return dao.findByPage3(o);
+	}
 	
 	/*@Autowired
 	private PreprojectDao dao;*/
