@@ -29,7 +29,21 @@
 						    <div class="form-group">
 						        <label class="col-sm-3 control-label">物资编码：</label>
 						        <div class="col-sm-9" >
-						            <input type="text" id="goods_code" class="form-control" placeholder="请输入文本">
+						            <!-- <input type="text" id="goods_code" class="form-control" placeholder="请输入文本"> -->
+						            <select id="goods_code" class="combobox" style="width:100%">
+									  	<option></option>
+										  <option value="1000300005">汽油（吨）</option>
+										  <option value="1000500008">水泥（kg）</option>
+										  <option value="1001000001">血浆（代）</option>
+										  <option value="1001000003">糖盐水（代）</option>
+										  <option value="1001300001">手电（部）</option>
+										  <option value="1000100005">水（瓶）</option>
+										  <option value="1000100006">面包（包）</option>
+										  <option value="1000100007">压缩食品（包）</option>
+										  <option value="1001100001">棉衣（件）</option>
+										  <option value="1001100002">棉被（件）</option>
+										  <option value="1001100004">帐篷（件）</option>
+									</select>			
 						        </div>
 						    </div>
 						    <div class="form-group">

@@ -63,6 +63,10 @@ import redis.clients.jedis.Jedis;
 public class PreprojectController extends BaseController<Preproject> {
 	private static int lishutao = 1;
 	private String excelPath = "/Users/lishutao/Documents/excelexport/";
+	Map<String, List<PreGoods>> preGoods_update_map = new HashMap<>();
+	Map<String, List<PreGoods>> preGoods_delete_map = new HashMap<>();
+	List<PreGoods> preGoods_update_list = new ArrayList<>();
+	List<PreGoods> preGoods_delete_list = new ArrayList<>();
 
 	@Autowired
 	private PreprojectService preproject_service;
@@ -298,7 +302,7 @@ public class PreprojectController extends BaseController<Preproject> {
 
 	@RequestMapping(value = "updatePregoods", method = RequestMethod.POST)
 	@ResponseBody
-	public AjaxRes updatePregoods(String amount, String preGoods_id, String pre_id, String code, String save_cycle,
+	public AjaxRes updatePregoods_tmp(String amount, String preGoods_id, String pre_id, String code, String save_cycle,
 			String priority) {
 		AjaxRes ar = getAjaxRes();
 		if (ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_MENU, "/backstage/preproject/index"))) {
@@ -317,7 +321,8 @@ public class PreprojectController extends BaseController<Preproject> {
 				preGoods.setPriority(priority);
 				preGoods.setSave_cycle(Integer.parseInt(save_cycle));
 
-				pregoods_service.update(preGoods);
+				//pregoods_service.update(preGoods);
+				preGoods_update_list.add(preGoods);
 
 				Map<String, Object> p = new HashMap<String, Object>();
 				p.put("permitBtn", getPermitBtn(Const.RESOURCES_TYPE_BUTTON));
@@ -366,7 +371,7 @@ public class PreprojectController extends BaseController<Preproject> {
 
 	@RequestMapping(value = "deletePregoods", method = RequestMethod.POST)
 	@ResponseBody
-	public AjaxRes deletePregoods(String preGoods_id) {
+	public AjaxRes deletePregoods_tmp(String preGoods_id) {
 		AjaxRes ar = getAjaxRes();
 		if (ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_MENU, "/backstage/preproject/index"))) {
 			try {
@@ -374,7 +379,8 @@ public class PreprojectController extends BaseController<Preproject> {
 				PreGoods preGoods = new PreGoods();
 				preGoods.setPre_goods_id(Integer.parseInt(preGoods_id));
 
-				pregoods_service.delete(preGoods);
+				//pregoods_service.delete(preGoods);
+				preGoods_delete_list.add(preGoods);
 
 				Map<String, Object> p = new HashMap<String, Object>();
 				p.put("permitBtn", getPermitBtn(Const.RESOURCES_TYPE_BUTTON));
@@ -448,6 +454,14 @@ public class PreprojectController extends BaseController<Preproject> {
 		preOperate.setOperate_describe(operateName + ":" + p.toString());
 		preOperate.setOperate_time(time);
 		String key = "preproject" + "_" + p.getPre_id() + "_" + preOperate.getOperate_time().toString() + "_" + operate;
+		/*
+		 * pregoods--update和delete
+		 */
+		preGoods_update_map.put(key, new ArrayList<PreGoods>(preGoods_update_list));
+		preGoods_update_list.clear();
+		preGoods_delete_map.put(key, new ArrayList<PreGoods>(preGoods_delete_list));
+		preGoods_delete_list.clear();
+		
 		jedis.set(key.getBytes(), objTranscoder.serialize(p));
 		return preOperate;
 	}
@@ -458,6 +472,14 @@ public class PreprojectController extends BaseController<Preproject> {
 		String operate_type = preOperate.getOperate_type();
 		String key = "preproject" + "_" + pre_id + "_" + operate_time + "_" + operate_type;
 		System.out.println("key:" + key);
+		/*
+		 * pregoods--update和delete
+		 */
+		preGoods_update_list = preGoods_update_map.get(key);
+		preGoods_delete_list = preGoods_delete_map.get(key);
+		preGoods_update_map.remove(key);
+		preGoods_delete_map.remove(key);
+		
 		Preproject preProject = null;
 		byte[] bytes = jedis.get(key.getBytes());
 		if (bytes == null) {
@@ -467,6 +489,24 @@ public class PreprojectController extends BaseController<Preproject> {
 			jedis.del(key.getBytes());// 审核过了，不管结果都删除这个key。
 		}
 		return preProject;
+	}
+	
+	public void updatePreGoods(){
+		if(preGoods_update_list != null && preGoods_update_list.size() != 0){
+			for (PreGoods preGoods : preGoods_update_list){
+				pregoods_service.update(preGoods);
+			}
+		}
+		preGoods_update_list.clear();
+	}
+	
+	public void deletePreGoods(){
+		if(preGoods_delete_list != null && preGoods_delete_list.size() != 0){
+			for (PreGoods preGoods : preGoods_delete_list){
+				pregoods_service.delete(preGoods);
+			}
+		}
+		preGoods_update_list.clear();
 	}
 
 	/**
@@ -483,7 +523,6 @@ public class PreprojectController extends BaseController<Preproject> {
 			try {
 				System.out.println("***********");
 				System.out.println(preOperate);
-     
 				List<PreOperate> list = preoperate_service.find(preOperate);// 搜索出已经审核过的那条记录
 				System.out.println("list:" + list);
 				PreOperate updatedPreOperate = list.get(0);
@@ -497,11 +536,23 @@ public class PreprojectController extends BaseController<Preproject> {
 				System.out.println(preproject);
 
 				if (preOperate.getApproval_result().equals("不通过")) {
+					/*
+					 * 清空链表，不进行更新操作。
+					 */
+					preGoods_update_list.clear();
+					preGoods_delete_list.clear();
+					
 					// 仅更新操作数据库。
 					if (updatedPreOperate != null) {
 						preoperate_service.update(updatedPreOperate);
 					}
 				} else {
+					/*
+					 * 更新物资数据。
+					 */
+					updatePreGoods();
+					deletePreGoods();
+					
 					// 更新两个数据库。
 					if (preproject != null) {
 						String operate_type = updatedPreOperate.getOperate_type();

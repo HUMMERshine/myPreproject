@@ -148,9 +148,13 @@ var ButtonInit = function() {
 		// '/elpdemo/webpage/modules/basicfun/preproject/list.jsp';
 		// });
 		$('#btn_cancel').click(function() {
+			console.log("ttttt");
 			JY.Ajax.doRequest(null,jypath +'/backstage/emergency/cleanPreproject',{},function(data){
 				console.log(data);
+				
 			});
+			console.log("ttttt");
+			window.location.href = jypath +'/backstage/emergency/index';
 		});
 		$('#btn_select').click(function() {
 //			var selects = $('#operateinfo').bootstrapTable('getSelections');
@@ -163,6 +167,8 @@ var ButtonInit = function() {
 			swal("预案选择完成，开始进行救援任务！");
 			 //window.location.href="http://192.168.11.30:8080/mypaper";
 			 JY.Ajax.doRequest(null,jypath +'/backstage/preproject/getFinalData',{pre_id:"1000000001"},function(data){
+				 console.log(data);
+				 console.log(resolveData(data));
 				 JY.Ajax.doRequest(null,'http://192.168.11.30:8080/mypaper/reqgood/receivereq',{gid:resolveData(data)},function(data){
 					 console.log(data);
 					 JY.Ajax.doRequest(null,jypath +'/backstage/emergency/cleanPreproject',{},function(data){
@@ -188,4 +194,14 @@ function getTime(t) {
 
 function match() {
 
+}
+
+function resolveData(data){
+	list = data.obj.list;
+	var res = "";
+	for(var  i in list){
+		res += list[i].goods.code + "_" + list[i].amount + "_" +list[i].priority + "_" + list[i].save_cycle+ "*";
+	}
+	if(res.length > 0) res = res.substring(0, res.length-1);
+	return res;
 }

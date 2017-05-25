@@ -55,25 +55,6 @@ public class PreOperateController extends BaseController<PreOperate>{
 		return ar;
 	}
 	
-	@RequestMapping(value="findNoApprovalByPage2", method=RequestMethod.POST)
-	@ResponseBody
-	public AjaxRes findByPage2(Page<PreOperate> page,PreOperate o){
-		AjaxRes ar=getAjaxRes();	
-		if(ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_MENU,"/backstage/operate/index"))){
-			try {
-				Page<PreOperate> result=service.findNoApprovalByPage(o, page);
-				Map<String, Object> p=new HashMap<String, Object>();
-				p.put("permitBtn",getPermitBtn(Const.RESOURCES_TYPE_BUTTON));
-				p.put("list",result);
-				ar.setSucceed(p);
-			} catch (Exception e) {
-				logger.error(e.toString(),e);
-				ar.setFailMsg(Const.DATA_FAIL);
-			}	
-		}
-		return ar;
-	}
-	
 	@RequestMapping(value="find", method=RequestMethod.POST)
 	@ResponseBody
 	public AjaxRes find(PreOperate o){

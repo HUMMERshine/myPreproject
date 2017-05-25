@@ -45,8 +45,7 @@
     	<update id="update" parameterType="Preproject">
 		UPDATE preproject 
 		SET 
-			pre_name  =#{pre_name},
-			match  =#{match}
+			pre_name  =#{pre_name}
 		WHERE 
 			"pre_id"=#{pre_id};
 		UPDATE pre_condition 
@@ -65,13 +64,11 @@
 	INSERT INTO preproject(
 	pre_id,
 	pre_name,
-	pre_time,
-	match
+	pre_time
 	) VALUES (
 	#{pre_id},
 	#{pre_name},
-	#{pre_time},
-	#{match}
+	#{pre_time}
 	);
 	INSERT INTO pre_condition(
 	pre_id,

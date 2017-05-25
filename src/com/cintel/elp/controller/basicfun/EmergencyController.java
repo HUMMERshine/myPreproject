@@ -47,7 +47,6 @@ public class EmergencyController extends BaseController<Goods> {
 
 	@RequestMapping("index")
 	public String index(Model model) throws UnsupportedEncodingException {
-		System.out.println("*********");
 		if (doSecurityIntercept(Const.RESOURCES_TYPE_MENU)) {
 			model.addAttribute("permitBtn", getPermitBtn(Const.RESOURCES_TYPE_FUNCTION));
 			return "/basicfun/emergency/list";
@@ -55,22 +54,31 @@ public class EmergencyController extends BaseController<Goods> {
 		return Const.NO_AUTHORIZED_URL;
 	}
 
+	/*
+	 * 进行预案的自动生成操作
+	 */
 	@RequestMapping("create")
 	public String create(Model model, @RequestParam Map<String, Object> map) throws UnsupportedEncodingException {
-		System.out.println("*********");
 		//model.addAttribute("permitBtn", getPermitBtn(Const.RESOURCES_TYPE_FUNCTION));
+		
+		/*
+		 * svm文件存储路径
+		 */
 		String path = "/Users/lishutao/workspace/preproject/";
-		System.out.println(map);
+		
+		/*
+		 * 清空上次的预案数据。
+		 */
 		list.clear();
 		
 		Preproject preproject = new Preproject();
 		PreCondition preCondition = new PreCondition();
+		preCondition.setDisaster_kind(new String(((String)map.get("disaster_type")).getBytes("ISO-8859-1"),"UTF-8"));
 		preCondition.setClimate(new String(((String)map.get("climate")).getBytes("ISO-8859-1"),"UTF-8"));
 		preCondition.setGeography(new String(((String)map.get("geography")).getBytes("ISO-8859-1"),"UTF-8"));
 		preCondition.setDisaster_area(Double.parseDouble((String)map.get("area")));
 		preCondition.setDisaster_strength(Double.parseDouble((String)map.get("level")));
 		preCondition.setDisaster_people(Integer.parseInt((String)map.get("people")));
-		System.out.println(preCondition);
 		preproject.setPre_id("1000000001");
 		preproject.setPre_time(Timestamp.valueOf((String)map.get("time")));
 		preproject.setPreCondition(preCondition);
@@ -79,18 +87,30 @@ public class EmergencyController extends BaseController<Goods> {
 		PreGoods preGoods = new PreGoods();
 		preGoods.setPreproject(preproject);
 		
+		/*
+		 * 删除上次预测的结果，也即是删除编号1000000001的预案信息。
+		 */
 		preGoods_service.deleteByPreId(preGoods);
 		service.delete(preproject);
 		
+		/*
+		 * 进行svm预算，预测出受伤人数
+		 */
 		getData(list, map);
 		double predict = SVM.getResult(path, list);
 		
+		/*
+		 * 通过受伤人数计算出物资需求情况，进行数据库插入操作。
+		 */
 		service.getGoods(predict, preproject);
 		service.insert(preproject);
 		
 		return "/basicfun/emergency/create";
 	}
 
+	/*
+	 * 预案匹配操作
+	 */
 	@RequestMapping(value = "preprojectMatch", method = RequestMethod.POST)
 	@ResponseBody
 	public AjaxRes preprojectMatch(@RequestParam Map<String, Object> map) {
@@ -103,7 +123,6 @@ public class EmergencyController extends BaseController<Goods> {
 		if (ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_MENU, "/backstage/emergency/index"))) {
 			try {
 
-				System.out.println("-----------" + map);
 				// Page<Preproject> result = service.match(map);
 				// Page<Preproject> result = service.findByPage(new
 				// Preproject(), new Page<Preproject>());
@@ -120,6 +139,9 @@ public class EmergencyController extends BaseController<Goods> {
 		return ar;
 	}
 	
+	/*
+	 * 点击放弃预案后，进行清空10000000001号临时预案的操作
+	 */
 	@RequestMapping(value = "cleanPreproject", method = RequestMethod.POST)
 	@ResponseBody
 	public AjaxRes cleanPreproject(@RequestParam Map<String, Object> map) {
@@ -132,8 +154,6 @@ public class EmergencyController extends BaseController<Goods> {
 		if (ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_MENU, "/backstage/emergency/index"))) {
 			try {
 
-				System.out.println("-----------" + map);
-				
 				Preproject preproject = new Preproject();
 				preproject.setPre_id("1000000001");
 				PreGoods preGoods = new PreGoods();
@@ -141,7 +161,6 @@ public class EmergencyController extends BaseController<Goods> {
 				
 				preGoods_service.deleteByPreId(preGoods);
 				service.delete(preproject);
-				
 			} catch (Exception e) {
 				logger.error(e.toString(), e);
 				ar.setFailMsg(Const.DATA_FAIL);
@@ -150,6 +169,9 @@ public class EmergencyController extends BaseController<Goods> {
 		return ar;
 	}
 	
+	/*
+	 * 格式化数据
+	 */
 	void getData(List<Double> list, Map<String, Object> map){
 		
 		String time = (String)map.get("time");
@@ -178,6 +200,5 @@ public class EmergencyController extends BaseController<Goods> {
 		list.add(prediction);
 		list.add(0.0);
 		
-		System.out.println(list);
 	}
 }

@@ -38,11 +38,11 @@
 						<td class="DataTD">&nbsp;
 						<input type="text" maxlength="16" jyValidate="required" name="geography" class="FormElement ui-widget-content ui-corner-all"></td>
 					</tr>
-					<tr class="FormData">
+					<!-- <tr class="FormData">
 						<td class="CaptionTD"><font color="red">*</font>匹配度：</td>
 						<td class="DataTD">&nbsp;
-						<input type="text" maxlength="16" jyValidate="required,ennum" name="match" class="FormElement ui-widget-content ui-corner-all"></td>
-					</tr>
+						<input type="text" maxlength="16" jyValidate="required" name="match" class="FormElement ui-widget-content ui-corner-all"></td>
+					</tr> -->
 					
 				</tbody>
 			</table>

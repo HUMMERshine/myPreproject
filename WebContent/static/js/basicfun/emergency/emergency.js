@@ -27,10 +27,11 @@ var ButtonInit = function() {
 		$('#btn_create')
 		.click(
 				function() {
-					var param = 'level=' + $('#disaster_level').val() + '&time=' + $('#disaster_time').val() + '&people=' + $('#disaster_people').val() + '&area=' + $('#disaster_area').val() + '&climate=' + encodeURI($('#disaster_climate').val()) + '&geography=' + encodeURI($('#disaster_geography').val()) + '&info=' + $('#disaster_info').val()
+					var param = 'disaster_type=' + $('#disaster_type').val() + '&level=' + $('#disaster_level').val() + '&time=' + $('#disaster_time').val() + '&people=' + $('#disaster_people').val() + '&area=' + $('#disaster_area').val() + '&climate=' + encodeURI($('#disaster_climate').val()) + '&geography=' + encodeURI($('#disaster_geography').val()) + '&info=' + $('#disaster_info').val()
 					window.location.href = jypath + '/backstage/emergency/create?' + param;
 				});
 		$('#btn_match').click(function() {
+			//console.log("lst" + $('#my_select').val());
 			match();
 			$('#btn_select').show();
 		});

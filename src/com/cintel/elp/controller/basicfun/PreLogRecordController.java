@@ -29,7 +29,6 @@ public class PreLogRecordController extends BaseController<PreOperate>{
 	
 	@RequestMapping("index")
 	public String index(Model model) throws UnsupportedEncodingException{	
-		System.out.println("==================");
 		if(doSecurityIntercept(Const.RESOURCES_TYPE_MENU)){
 			model.addAttribute("permitBtn", getPermitBtn(Const.RESOURCES_TYPE_FUNCTION));		
 			return "/basicfun/logrecord/list";
@@ -76,11 +75,9 @@ public class PreLogRecordController extends BaseController<PreOperate>{
 	@RequestMapping(value="findAll", method=RequestMethod.POST)
 	@ResponseBody
 	public AjaxRes findAll(PreOperate o){
-		System.out.println("-------+++++++");
 		AjaxRes ar=getAjaxRes();
 		//if(ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_BUTTON))){		
 			try {
-				System.out.println("-------+++++++");
 				List<PreOperate> list=service.find(o);
 				System.out.println(list);
 				ar.setSucceed(list);

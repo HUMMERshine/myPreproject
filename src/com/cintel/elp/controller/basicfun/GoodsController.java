@@ -134,10 +134,7 @@ public class GoodsController extends BaseController<Goods> {
 		AjaxRes ar=getAjaxRes();
 		//if(ar.setNoAuth(doSecurityIntercept(Const.RESOURCES_TYPE_BUTTON))){		
 			try {
-				System.out.println("&&&&%%%%%%&&&&&&");
-				System.out.println(o);
 				List<Goods> list=service.findByCode(o);
-				System.out.println(list);
 				boolean exist = list.size() > 0 ? true : false;
 				ar.setSucceed(exist);
 			} catch (Exception e) {
